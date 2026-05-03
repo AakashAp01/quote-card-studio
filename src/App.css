@@ -34,6 +34,10 @@
   background: #2a2a38;
 }
 
+.mobile-toggle.hidden {
+  display: none !important;
+}
+
 .mobile-overlay {
   display: none;
 }
@@ -54,6 +58,7 @@
     top: 0;
     left: 0;
     bottom: 0;
+    height: 100dvh; /* Better mobile viewport sizing */
     z-index: 900;
     transform: translateX(-100%);
     transition: transform 0.3s ease;
