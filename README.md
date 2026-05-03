@@ -6,6 +6,10 @@
   <p>
     <strong>A powerful, modern web application for designing beautiful, shareable quote cards instantly.</strong>
   </p>
+
+  <p>
+    <a href="quote-studio-ap.vercel.app"><strong>🔴 View Live Demo</strong></a>
+  </p>
 </div>
 
 ## ✨ Features
