@@ -1,0 +1,31 @@
+.sidebar {
+  width: 320px;
+  flex-shrink: 0;
+  overflow-y: auto;
+  background: #0e0e10;
+  border-right: 1px solid #1e1e26;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sidebar-header {
+  padding-bottom: 4px;
+}
+
+.sidebar-title {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.sidebar-title .accent {
+  color: #5a5aff;
+}
+
+.sidebar-subtitle {
+  font-size: 11px;
+  color: #555;
+  margin-top: 2px;
+}

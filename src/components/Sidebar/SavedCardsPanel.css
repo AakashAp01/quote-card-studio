@@ -1,0 +1,154 @@
+.save-current-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 14px;
+  background: linear-gradient(135deg, #1a1a40, #1e1e30);
+  border: 1px dashed #3a3a60;
+  border-radius: 8px;
+  color: #8888ff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: inherit;
+  margin-bottom: 10px;
+}
+
+.save-current-btn:hover {
+  background: linear-gradient(135deg, #1e1e50, #22224a);
+  border-color: #5a5aff;
+  color: #aaaaff;
+}
+
+.save-input-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.save-input-row input {
+  flex: 1;
+  min-width: 0;
+}
+
+.saved-loading,
+.saved-empty {
+  font-size: 12px;
+  color: #555;
+  text-align: center;
+  padding: 16px 0;
+}
+
+.saved-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.saved-card-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  background: #1a1a20;
+  border: 1px solid #2a2a32;
+  border-radius: 8px;
+  transition: all 0.15s;
+}
+
+.saved-card-item:hover {
+  border-color: #3a3a4a;
+  background: #1e1e28;
+}
+
+.saved-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+.saved-card-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: #ccc;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.saved-card-date {
+  font-size: 10px;
+  color: #555;
+}
+
+.saved-card-actions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+
+.saved-card-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid #2e2e38;
+  background: #1e1e24;
+  cursor: pointer;
+  transition: all 0.15s;
+  color: #888;
+  padding: 0;
+}
+
+.saved-card-action.load:hover {
+  border-color: #5a5aff;
+  color: #5a5aff;
+  background: #1a1a3a;
+}
+
+.saved-card-action.delete:hover {
+  border-color: #ff5050;
+  color: #ff5050;
+  background: #2a1a1a;
+}
+
+.saved-card-action:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.saved-msg {
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  margin-bottom: 8px;
+  text-align: center;
+  animation: msgFadeIn 0.2s ease;
+}
+
+@keyframes msgFadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.saved-msg-success {
+  background: rgba(80, 255, 120, 0.08);
+  border: 1px solid rgba(80, 255, 120, 0.2);
+  color: #4adf80;
+}
+
+.saved-msg-error {
+  background: rgba(255, 80, 80, 0.08);
+  border: 1px solid rgba(255, 80, 80, 0.2);
+  color: #ff6464;
+}
