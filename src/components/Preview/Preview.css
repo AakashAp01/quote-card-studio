@@ -173,16 +173,60 @@
   transform: translateY(-1px);
 }
 
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.github-star-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: #1e1e24;
+  border: 1px solid #2e2e38;
+  border-radius: 6px;
+  color: #e8e8e8;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.github-star-btn:hover {
+  border-color: #5a5aff;
+  background: #25252e;
+}
+
+@media (max-width: 900px) {
+  .preview-topbar {
+    padding-left: 64px;
+  }
+}
+
 @media (max-width: 650px) {
   .preview-topbar {
     flex-wrap: wrap;
-    gap: 8px;
-    padding: 10px 12px;
-    padding-left: 56px; /* Space for the mobile toggle */
+    gap: 12px;
+    padding: 12px;
+    padding-left: 64px;
   }
 
   .download-btn span {
-    display: none; /* Only show the download icon on small screens */
+    display: none;
+  }
+
+  .github-star-btn span {
+    display: none;
+  }
+
+  .github-star-btn {
+    padding: 8px;
+  }
+  
+  .topbar-right {
+    gap: 8px;
   }
 
   .preview-footer {
@@ -202,3 +246,4 @@
     text-align: center;
   }
 }
+

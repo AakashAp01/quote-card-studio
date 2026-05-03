@@ -92,7 +92,18 @@ export default function Preview({ state, onSignInClick }) {
             <span>{downloading ? 'Rendering...' : 'Download'}</span>
           </button>
         </div>
-        <UserMenu onSignInClick={onSignInClick} />
+        <div className="topbar-right">
+          <a
+            href="https://github.com/AakashAp01/quote-card-studio"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="github-star-btn"
+          >
+            <FiGithub size={14} />
+            <span>Star</span>
+          </a>
+          <UserMenu onSignInClick={onSignInClick} />
+        </div>
       </div>
 
       <div className="preview-canvas">
