@@ -353,3 +353,12 @@
     padding: 16px;
   }
 }
+/* 
+  Reset conflicting Editor-specific styles from index.css 
+  to ensure the Showcase masonry scaling works perfectly.
+*/
+.showcase-page #card-preview {
+  max-width: none !important;
+  transform: none !important;
+  transform-origin: unset !important;
+}

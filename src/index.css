@@ -476,11 +476,11 @@ input[type="color"]::-webkit-color-swatch {
     padding: 8px 16px;
   }
 
-  /* #card-preview {
+  #card-preview {
     max-width: 90vw !important;
     transform: scale(0.85);
     transform-origin: center center;
-  } */
+  }
 }
 
 @media (max-width: 600px) {
@@ -489,9 +489,9 @@ input[type="color"]::-webkit-color-swatch {
     min-height: 300px;
   }
 
-  /* #card-preview {
+  #card-preview {
     transform: scale(0.7);
-  } */
+  }
 
   .preview-actions {
     gap: 4px;
