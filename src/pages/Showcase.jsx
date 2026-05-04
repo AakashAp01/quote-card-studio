@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiArrowLeft, FiLoader, FiExternalLink, FiDownload, FiEdit2 } from 'react-icons/fi';
+import { FiArrowLeft, FiLoader, FiEdit2 } from 'react-icons/fi';
 import useSavedCards from '../hooks/useSavedCards';
 import CardPreview from '../components/Preview/CardPreview';
 import { RATIO_MAP } from '../constants';
