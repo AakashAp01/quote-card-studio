@@ -8,7 +8,7 @@
   </p>
 
   <p>
-    <a href="https://quote-studio-ap.vercel.app/"><strong>🔴 View Live Demo</strong></a>
+    <a href="https://quote-studio-ap.vercel.app/"><strong>View Live</strong></a>
   </p>
 </div>
 
