@@ -22,8 +22,8 @@ export default function UserMenu({ onSignInClick }) {
   if (!user) {
     return (
       <button className="sign-in-btn" onClick={onSignInClick} type="button">
-        <FiUser size={14} />
-        <span>Sign In</span>
+        <FiUser size={16} />
+        {/* <span>Sign In</span> */}
       </button>
     );
   }
