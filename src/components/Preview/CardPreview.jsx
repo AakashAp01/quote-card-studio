@@ -1,4 +1,4 @@
-import { memo, useMemo } from 'react';
+import { memo, useMemo, useEffect, useRef } from 'react';
 import { SHADOWS, RATIO_MAP } from '../../constants';
 import { applyHighlights, hexToRgba } from '../../utils';
 
@@ -14,8 +14,25 @@ function generatePatternCells(emoji, spacing, cardW, cardH) {
   return { cells, cols };
 }
 
-const CardPreview = memo(function CardPreview({ state, cardRef }) {
+const CardPreview = memo(function CardPreview({ state, cardRef, isThumbnail = false }) {
   const [w, h] = RATIO_MAP[state.ratio];
+  const lastLoadedUrl = useRef(null);
+
+  // Auto-load custom Google Font if provided in state
+  useEffect(() => {
+    if (state.gfontUrl && state.gfontUrl !== lastLoadedUrl.current) {
+      // Use a unique ID for each font URL to avoid conflicts in a grid
+      const linkId = `gfont-${state.gfontUrl.replace(/[^a-z0-9]/gi, '')}`;
+      if (!document.getElementById(linkId)) {
+        const link = document.createElement('link');
+        link.id = linkId;
+        link.rel = 'stylesheet';
+        link.href = state.gfontUrl;
+        document.head.appendChild(link);
+      }
+      lastLoadedUrl.current = state.gfontUrl;
+    }
+  }, [state.gfontUrl]);
 
   const background = useMemo(() => {
     if (state.bgTab === 'solid') return state.bgColor;
@@ -52,12 +69,12 @@ const CardPreview = memo(function CardPreview({ state, cardRef }) {
   const cardStyle = {
     background,
     padding: state.padding,
-    borderRadius: state.radius,
+    borderRadius: isThumbnail ? 0 : state.radius,
     width: w,
     height: h || 'auto',
     minHeight: h ? 'unset' : 200,
-    boxShadow: SHADOWS[state.shadow],
-    border: state.showBorder ? `${state.borderWidth}px ${state.borderStyle} ${state.borderColor}` : 'none',
+    boxShadow: isThumbnail ? 'none' : SHADOWS[state.shadow],
+    border: (state.showBorder && !isThumbnail) ? `${state.borderWidth}px ${state.borderStyle} ${state.borderColor}` : 'none',
     color: state.textColor,
     fontFamily: `'${state.font}', serif`,
     textAlign: state.align,
@@ -68,6 +85,9 @@ const CardPreview = memo(function CardPreview({ state, cardRef }) {
     alignItems: 'center',
     justifyContent: 'center',
     wordBreak: 'break-word',
+    margin: 0,
+    boxSizing: 'border-box',
+    flexShrink: 0,
   };
 
   return (

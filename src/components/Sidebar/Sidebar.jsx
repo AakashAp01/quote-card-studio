@@ -56,6 +56,7 @@ export default function Sidebar({
       <FontSection
         font={state.font}
         customFontName={state.customFontName}
+        gfontUrl={state.gfontUrl}
         fontSize={state.fontSize}
         lineHeight={state.lineHeight}
         fontWeight={state.fontWeight}

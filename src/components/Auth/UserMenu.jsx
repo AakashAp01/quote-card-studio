@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
-import { FiUser, FiLogOut, FiChevronDown } from 'react-icons/fi';
+import { FiUser, FiLogOut, FiChevronDown, FiGrid } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import './UserMenu.css';
 
 export default function UserMenu({ onSignInClick }) {
-  const { user, signOut } = useAuth();
+  const { user, profile, signOut } = useAuth();
   const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
 
@@ -27,7 +28,7 @@ export default function UserMenu({ onSignInClick }) {
     );
   }
 
-  const displayName = user.email?.split('@')[0] || 'User';
+  const displayName = profile?.username || user.email?.split('@')[0] || 'User';
 
   const handleSignOut = async () => {
     setOpen(false);
@@ -40,17 +41,20 @@ export default function UserMenu({ onSignInClick }) {
         className="user-menu-trigger"
         onClick={() => setOpen(!open)}
         type="button"
+        title={displayName}
       >
         <div className="user-avatar">
           {displayName.charAt(0).toUpperCase()}
         </div>
-        <span className="user-name">{displayName}</span>
-        <FiChevronDown size={14} className={`user-chevron${open ? ' open' : ''}`} />
+        {/* <FiChevronDown size={14} className={`user-chevron${open ? ' open' : ''}`} /> */}
       </button>
 
       {open && (
         <div className="user-dropdown">
-          <div className="user-dropdown-email">{user.email}</div>
+          <div className="user-dropdown-header">
+            <div className="user-dropdown-name">{displayName}</div>
+            <div className="user-dropdown-email">{user.email}</div>
+          </div>
           <div className="user-dropdown-divider" />
           <button className="user-dropdown-item" onClick={handleSignOut} type="button">
             <FiLogOut size={14} />

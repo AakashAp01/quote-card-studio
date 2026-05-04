@@ -12,7 +12,7 @@ export default function useSavedCards() {
     setLoading(true);
     const { data, error } = await supabase
       .from('saved_cards')
-      .select('id, name, created_at, updated_at')
+      .select('id, name, created_at, updated_at, is_public')
       .eq('user_id', user.id)
       .order('updated_at', { ascending: false });
 
@@ -20,7 +20,7 @@ export default function useSavedCards() {
     setLoading(false);
   }, [user]);
 
-  const saveCard = useCallback(async (name, cardState) => {
+  const saveCard = useCallback(async (name, cardState, isPublic = false) => {
     if (!user) return null;
     const { data, error } = await supabase
       .from('saved_cards')
@@ -28,6 +28,7 @@ export default function useSavedCards() {
         user_id: user.id,
         name: name.trim() || 'Untitled Card',
         card_state: cardState,
+        is_public: isPublic,
       })
       .select()
       .single();
@@ -37,18 +38,29 @@ export default function useSavedCards() {
     return data;
   }, [user, loadCards]);
 
-  const loadCard = useCallback(async (id) => {
-    if (!user) return null;
+  const loadPublicCards = useCallback(async () => {
+    setLoading(true);
     const { data, error } = await supabase
       .from('saved_cards')
-      .select('card_state')
+      .select('*, profiles(username)')
+      .eq('is_public', true)
+      .order('created_at', { ascending: false });
+
+    setLoading(false);
+    if (error) throw error;
+    return data || [];
+  }, []);
+
+  const loadCard = useCallback(async (id) => {
+    const { data, error } = await supabase
+      .from('saved_cards')
+      .select('id, user_id, card_state')
       .eq('id', id)
-      .eq('user_id', user.id)
       .single();
 
     if (error) throw error;
-    return data.card_state;
-  }, [user]);
+    return data;
+  }, []);
 
   const deleteCard = useCallback(async (id) => {
     if (!user) return;
@@ -62,5 +74,17 @@ export default function useSavedCards() {
     await loadCards();
   }, [user, loadCards]);
 
-  return { cards, loading, loadCards, saveCard, loadCard, deleteCard };
+  const updateCard = useCallback(async (id, updates) => {
+    if (!user) return;
+    const { error } = await supabase
+      .from('saved_cards')
+      .update(updates)
+      .eq('id', id)
+      .eq('user_id', user.id);
+
+    if (error) throw error;
+    await loadCards();
+  }, [user, loadCards]);
+
+  return { cards, loading, loadCards, saveCard, loadCard, deleteCard, loadPublicCards, updateCard };
 }

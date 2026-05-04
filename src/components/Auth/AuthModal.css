@@ -159,6 +159,28 @@
   cursor: not-allowed;
 }
 
+.auth-forgot {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -6px;
+  margin-bottom: 4px;
+}
+
+.auth-forgot button {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 11px;
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.15s;
+  font-family: inherit;
+}
+
+.auth-forgot button:hover {
+  color: #5a5aff;
+}
+
 .auth-toggle {
   text-align: center;
   margin-top: 20px;

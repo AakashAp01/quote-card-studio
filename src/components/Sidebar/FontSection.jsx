@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { FiType } from 'react-icons/fi';
 import CollapsiblePanel from '../ui/CollapsiblePanel';
 import ControlRow from '../ui/ControlRow';
@@ -8,6 +8,7 @@ import { FONTS } from '../../constants';
 export default function FontSection({
   font,
   customFontName,
+  gfontUrl: savedGfontUrl,
   fontSize,
   lineHeight,
   fontWeight,
@@ -17,15 +18,18 @@ export default function FontSection({
   setFont,
   setCustomFont,
 }) {
-  const [gfontUrl, setGfontUrl] = useState('');
+  const [gfontUrl, setGfontUrl] = useState(savedGfontUrl || '');
   const [gfontStatus, setGfontStatus] = useState({ text: '', color: '#666' });
+  const lastLoadedUrl = useRef(null);
 
-  const loadGoogleFont = useCallback(() => {
-    const url = gfontUrl.trim();
+  const loadGoogleFont = useCallback((urlToLoad, isAuto = false) => {
+    const url = urlToLoad?.trim();
     if (!url) {
-      setGfontStatus({ text: 'Please enter a URL.', color: '#ff6464' });
+      if (!isAuto) setGfontStatus({ text: 'Please enter a URL.', color: '#ff6464' });
       return;
     }
+
+    if (lastLoadedUrl.current === url) return;
 
     let fontName = null;
     try {
@@ -48,8 +52,9 @@ export default function FontSection({
     document.head.appendChild(link);
 
     link.onload = () => {
+      lastLoadedUrl.current = url;
       if (fontName) {
-        setCustomFont(fontName);
+        setCustomFont(fontName, url);
         setGfontStatus({ text: `✓ Loaded: ${fontName}`, color: '#4adf80' });
       } else {
         setGfontStatus({
@@ -62,7 +67,15 @@ export default function FontSection({
     link.onerror = () => {
       setGfontStatus({ text: '✗ Failed to load font.', color: '#ff6464' });
     };
-  }, [gfontUrl, setCustomFont]);
+  }, [setCustomFont]);
+
+  // Sync internal input with saved state
+  useEffect(() => {
+    if (savedGfontUrl) {
+      setGfontUrl(savedGfontUrl);
+      loadGoogleFont(savedGfontUrl, true);
+    }
+  }, [savedGfontUrl, loadGoogleFont]);
 
   const handleFontSelect = useCallback(
     (name) => {
@@ -87,7 +100,7 @@ export default function FontSection({
           />
           <button
             className="btn btn-primary"
-            onClick={loadGoogleFont}
+            onClick={() => loadGoogleFont(gfontUrl)}
             style={{ whiteSpace: 'nowrap', fontSize: 11 }}
             type="button"
           >

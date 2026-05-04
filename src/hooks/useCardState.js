@@ -1,7 +1,10 @@
 import { useReducer, useCallback } from 'react';
 
 const initialState = {
+  id: null,
+  user_id: null,
   quoteText: 'Your future is shaped by the habits you repeat, not the goals you set.',
+// ...
   authorText: '— James Clear',
   font: 'Playfair Display',
   customFontName: null,
@@ -43,6 +46,8 @@ const initialState = {
   patternOpacity: 20,
   patternRotation: -15,
   patternBgColor: '#ffffff',
+  gfontUrl: '',
+  shouldDownload: false,
 };
 
 function reducer(state, action) {
@@ -51,10 +56,10 @@ function reducer(state, action) {
       return { ...state, [action.field]: action.value };
 
     case 'SET_FONT':
-      return { ...state, font: action.value, customFontName: null };
+      return { ...state, font: action.value, customFontName: null, gfontUrl: '' };
 
     case 'SET_CUSTOM_FONT':
-      return { ...state, font: action.value, customFontName: action.value };
+      return { ...state, font: action.value, customFontName: action.value, gfontUrl: action.url || state.gfontUrl };
 
     case 'ADD_HIGHLIGHT': {
       const word = action.value.trim();
@@ -78,8 +83,16 @@ function reducer(state, action) {
         gradAngle: action.angle,
       };
 
-    case 'LOAD_SAVED_CARD':
-      return { ...initialState, ...action.cardState };
+    case 'LOAD_SAVED_CARD': {
+      const { card, autoDownload } = action.payload;
+      return {
+        ...state,
+        ...card.card_state,
+        id: card.id,
+        user_id: card.user_id,
+        shouldDownload: autoDownload
+      };
+    }
 
     default:
       return state;
@@ -100,7 +113,7 @@ export default function useCardState() {
   );
 
   const setCustomFont = useCallback(
-    (name) => dispatch({ type: 'SET_CUSTOM_FONT', value: name }),
+    (name, url) => dispatch({ type: 'SET_CUSTOM_FONT', value: name, url }),
     []
   );
 
@@ -122,7 +135,9 @@ export default function useCardState() {
   );
 
   const loadCardState = useCallback(
-    (cardState) => dispatch({ type: 'LOAD_SAVED_CARD', cardState }),
+    (card, autoDownload = false) => {
+      dispatch({ type: 'LOAD_SAVED_CARD', payload: { card, autoDownload } });
+    },
     []
   );
 

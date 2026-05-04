@@ -1,5 +1,6 @@
 import { useRef, useCallback, useState } from 'react';
-import { FiDownload, FiLinkedin, FiGithub, FiTwitter } from 'react-icons/fi';
+import { FiDownload, FiLinkedin, FiGithub, FiTwitter, FiGrid } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 import { toPng, toJpeg, toSvg } from 'html-to-image';
 import CardPreview from './CardPreview';
 import UserMenu from '../Auth/UserMenu';
@@ -91,17 +92,24 @@ export default function Preview({ state, onSignInClick }) {
             <FiDownload size={14} />
             <span>{downloading ? 'Rendering...' : 'Download'}</span>
           </button>
-        </div>
-        <div className="topbar-right">
           <a
             href="https://github.com/AakashAp01/quote-card-studio"
             target="_blank"
             rel="noopener noreferrer"
-            className="github-star-btn"
+            className="download-btn github-btn"
           >
             <FiGithub size={14} />
             <span>Star</span>
           </a>
+        </div>
+        <div className="topbar-right">
+          <Link 
+            to="/showcase" 
+            className="download-btn showcase-link" 
+          >
+            <FiGrid size={14} />
+            <span>Showcase</span>
+          </Link>
           <UserMenu onSignInClick={onSignInClick} />
         </div>
       </div>
