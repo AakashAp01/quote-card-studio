@@ -2,6 +2,7 @@ import { useRef, useCallback, useState, useEffect } from 'react';
 import { FiDownload, FiLinkedin, FiGithub, FiTwitter, FiGrid } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { toPng, toJpeg, toSvg } from 'html-to-image';
+import gifshot from 'gifshot';
 import CardPreview from './CardPreview';
 import UserMenu from '../Auth/UserMenu';
 import { RATIO_MAP } from '../../constants';
@@ -12,6 +13,7 @@ const FORMATS = [
   { key: 'jpg', label: 'JPG', ext: 'jpg' },
   { key: 'svg', label: 'SVG', ext: 'svg' },
   { key: 'webp', label: 'WebP', ext: 'webp' },
+  { key: 'gif', label: 'GIF', ext: 'gif' },
 ];
 
 export default function Preview({ state, onSignInClick }) {
@@ -21,6 +23,7 @@ export default function Preview({ state, onSignInClick }) {
   const [format, setFormat] = useState('png');
   const [scale, setScale] = useState(1);
   const [autoHeight, setAutoHeight] = useState('auto');
+  const [progress, setProgress] = useState('');
 
   const handleDownload = useCallback(async () => {
     if (!cardRef.current) return;
@@ -57,6 +60,46 @@ export default function Preview({ state, onSignInClick }) {
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0);
         dataUrl = canvas.toDataURL('image/webp', 0.95);
+      } else if (format === 'gif') {
+        const frames = [];
+        const numFrames = 15;
+        const captureInterval = 120;
+
+        for (let i = 0; i < numFrames; i++) {
+          setProgress(`Capturing ${i + 1}/${numFrames}...`);
+          const frame = await toPng(cardRef.current, { ...options, pixelRatio: 1.5 });
+          frames.push(frame);
+          await new Promise(r => setTimeout(r, captureInterval));
+        }
+
+        setProgress('Encoding...');
+        
+        const [w, h] = RATIO_MAP[state.ratio];
+        const baseW = w || 480;
+        const baseH = state.ratio === 'free' ? (cardRef.current.scrollHeight) : (h || 480);
+
+        gifshot.createGIF({
+          images: frames,
+          gifWidth: baseW,
+          gifHeight: baseH,
+          interval: 0.1,
+          numFrames: numFrames,
+          frameDuration: 1,
+          sampleInterval: 10,
+        }, (obj) => {
+          if (!obj.error) {
+            const link = document.createElement('a');
+            link.download = `quote-card.gif`;
+            link.href = obj.image;
+            link.click();
+          } else {
+            console.error('GIF encoding failed:', obj.error);
+            alert('GIF encoding failed. Try a different background.');
+          }
+          setDownloading(false);
+          setProgress('');
+        });
+        return;
       }
 
       const link = document.createElement('a');
@@ -124,7 +167,7 @@ export default function Preview({ state, onSignInClick }) {
             type="button"
           >
             <FiDownload size={14} />
-            <span>{downloading ? 'Rendering...' : 'Download'}</span>
+            <span>{downloading ? (progress || 'Rendering...') : 'Download'}</span>
           </button>
           <a
             href="https://github.com/AakashAp01/quote-card-studio"

@@ -1,7 +1,8 @@
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiArrowLeft, FiLoader, FiEdit2, FiShare2, FiDownload, FiMoreVertical, FiCheck } from 'react-icons/fi';
+import { FiArrowLeft, FiLoader, FiEdit2, FiShare2, FiDownload, FiMoreVertical, FiCheck, FiPlay } from 'react-icons/fi';
 import { toPng } from 'html-to-image';
+import gifshot from 'gifshot';
 import useSavedCards from '../hooks/useSavedCards';
 import CardPreview from '../components/Preview/CardPreview';
 import { RATIO_MAP } from '../constants';
@@ -15,6 +16,7 @@ const ShowcaseCard = ({ card, isFocused, onFocus }) => {
   const [autoHeight, setAutoHeight] = useState('auto');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [downloading, setDownloading] = useState(false);
+  const [progress, setProgress] = useState('');
   const [copied, setCopied] = useState(false);
   
   const state = card.card_state;
@@ -81,12 +83,59 @@ const ShowcaseCard = ({ card, isFocused, onFocus }) => {
       link.download = `${card.name.replace(/\s+/g, '-').toLowerCase() || 'quote-card'}.png`;
       link.href = dataUrl;
       link.click();
-    } catch (err) {
-      console.error('Download failed:', err);
-      alert('Failed to generate image. Please try again.');
     } finally {
       setDownloading(false);
       setIsMenuOpen(false);
+    }
+  };
+
+  const handleDownloadGif = async (e) => {
+    e.stopPropagation();
+    if (!cardRef.current || downloading) return;
+    
+    setDownloading(true);
+    const frames = [];
+    const numFrames = 12;
+    const captureInterval = 150;
+
+    try {
+      for (let i = 0; i < numFrames; i++) {
+        setProgress(`${i + 1}/${numFrames}`);
+        const frame = await toPng(cardRef.current, { 
+          quality: 1, 
+          pixelRatio: 1.2,
+          style: { margin: 0, transform: 'none' }
+        });
+        frames.push(frame);
+        await new Promise(r => setTimeout(r, captureInterval));
+      }
+
+      setProgress('...');
+      gifshot.createGIF({
+        images: frames,
+        gifWidth: origW || 480,
+        gifHeight: ratio === 'free' ? (cardRef.current.scrollHeight) : (origH || 480),
+        interval: 0.12,
+        numFrames: numFrames,
+        frameDuration: 1,
+        sampleInterval: 10,
+      }, (obj) => {
+        if (!obj.error) {
+          const link = document.createElement('a');
+          link.download = `${card.name.replace(/\s+/g, '-').toLowerCase() || 'quote-card'}.gif`;
+          link.href = obj.image;
+          link.click();
+        } else {
+          console.error('GIF failed:', obj.error);
+        }
+        setDownloading(false);
+        setProgress('');
+        setIsMenuOpen(false);
+      });
+    } catch (err) {
+      console.error('GIF error:', err);
+      setDownloading(false);
+      setProgress('');
     }
   };
 
@@ -95,12 +144,9 @@ const ShowcaseCard = ({ card, isFocused, onFocus }) => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // Close menu if card loses focus
   useEffect(() => {
     if (!isFocused) setIsMenuOpen(false);
   }, [isFocused]);
-
-
 
   useEffect(() => {
     const updateScale = () => {
@@ -180,10 +226,16 @@ const ShowcaseCard = ({ card, isFocused, onFocus }) => {
                 {copied ? <FiCheck size={16} /> : <FiShare2 size={16} />}
                 <span>{copied ? 'Copied' : 'Share'}</span>
               </button>
-              <button className="action-item download" onClick={handleDownload} title="Download Image" disabled={downloading}>
-                {downloading ? <FiLoader className="spinner-mini" size={16} /> : <FiDownload size={16} />}
-                <span>{downloading ? '...' : 'Save'}</span>
+              <button className="action-item download" onClick={handleDownload} title="Download PNG" disabled={downloading}>
+                {downloading && !progress ? <FiLoader className="spinner-mini" size={16} /> : <FiDownload size={16} />}
+                <span>{downloading && !progress ? '...' : 'Save PNG'}</span>
               </button>
+              {(state.bgImgUrl?.toLowerCase().includes('.gif') || state.bgImgUrl?.startsWith('data:image/gif')) && (
+                <button className="action-item download" onClick={handleDownloadGif} title="Download GIF" disabled={downloading}>
+                  {downloading && progress ? <span style={{fontSize: '10px', fontWeight: 'bold'}}>{progress}</span> : <FiPlay size={16} />}
+                  <span>{downloading && progress ? 'Saving...' : 'Save GIF'}</span>
+                </button>
+              )}
             </div>
           </div>
         </div>
