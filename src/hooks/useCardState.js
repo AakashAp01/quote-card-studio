@@ -48,6 +48,10 @@ const initialState = {
   patternBgColor: '#ffffff',
   gfontUrl: '',
   shouldDownload: false,
+  glassMode: false,
+  glassBlur: 10,
+  glassOpacity: 20,
+  noiseOpacity: 0,
 };
 
 function reducer(state, action) {

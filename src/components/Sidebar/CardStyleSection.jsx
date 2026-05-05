@@ -30,6 +30,10 @@ export default function CardStyleSection({
   borderColor,
   borderWidth,
   borderStyle,
+  glassMode,
+  glassBlur,
+  glassOpacity,
+  noiseOpacity,
   setField,
 }) {
   return (
@@ -66,6 +70,30 @@ export default function CardStyleSection({
           <option value="lg">Large</option>
           <option value="xl">XL</option>
         </select>
+      </ControlRow>
+
+      <div className="divider" />
+
+      <ControlRow label="Glass Effect">
+        <Toggle id="glass-mode" checked={glassMode} onChange={(v) => setField('glassMode', v)} />
+      </ControlRow>
+
+      {glassMode && (
+        <>
+          <ControlRow label="Blur">
+            <input type="range" min={0} max={20} value={glassBlur} onInput={(e) => setField('glassBlur', Number(e.target.value))} style={{ flex: 2 }} />
+            <span className="range-val">{glassBlur}px</span>
+          </ControlRow>
+          <ControlRow label="Opacity">
+            <input type="range" min={0} max={60} value={glassOpacity} onInput={(e) => setField('glassOpacity', Number(e.target.value))} style={{ flex: 2 }} />
+            <span className="range-val">{glassOpacity}%</span>
+          </ControlRow>
+        </>
+      )}
+
+      <ControlRow label="Grain/Noise">
+        <input type="range" min={0} max={40} value={noiseOpacity} onInput={(e) => setField('noiseOpacity', Number(e.target.value))} style={{ flex: 2 }} />
+        <span className="range-val">{noiseOpacity}%</span>
       </ControlRow>
 
       <div className="divider" />

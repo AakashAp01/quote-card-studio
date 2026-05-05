@@ -92,6 +92,38 @@ const CardPreview = memo(function CardPreview({ state, cardRef, isThumbnail = fa
 
   return (
     <div id="card-preview" style={cardStyle} ref={cardRef}>
+      {state.noiseOpacity > 0 && (
+        <div
+          className="noise-layer"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            zIndex: 1,
+            pointerEvents: 'none',
+            opacity: state.noiseOpacity / 100,
+            background: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+          }}
+        />
+      )}
+
+      {state.glassMode && (
+        <div
+          className="glass-layer"
+          style={{
+            position: 'absolute',
+            inset: state.padding / 2,
+            zIndex: 1,
+            pointerEvents: 'none',
+            borderRadius: Math.max(0, state.radius - state.padding / 2),
+            background: `rgba(255, 255, 255, ${state.glassOpacity / 100})`,
+            backdropFilter: `blur(${state.glassBlur}px)`,
+            WebkitBackdropFilter: `blur(${state.glassBlur}px)`,
+            border: `1px solid rgba(255, 255, 255, 0.2)`,
+            boxShadow: 'inset 0 0 20px rgba(255, 255, 255, 0.05)',
+          }}
+        />
+      )}
+
       {state.bgTab === 'pattern' && patternData && (
         <div
           className="pattern-layer"
@@ -148,7 +180,7 @@ const CardPreview = memo(function CardPreview({ state, cardRef, isThumbnail = fa
           background: overlayBg,
         }}
       />
-      <div style={{ position: 'relative', zIndex: 1 }}>
+      <div style={{ position: 'relative', zIndex: 2 }}>
         {state.showQuotes && (
           <div
             className="quote-mark"

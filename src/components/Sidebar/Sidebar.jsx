@@ -103,6 +103,10 @@ export default function Sidebar({
         borderColor={state.borderColor}
         borderWidth={state.borderWidth}
         borderStyle={state.borderStyle}
+        glassMode={state.glassMode}
+        glassBlur={state.glassBlur}
+        glassOpacity={state.glassOpacity}
+        noiseOpacity={state.noiseOpacity}
         setField={setField}
       />
 
