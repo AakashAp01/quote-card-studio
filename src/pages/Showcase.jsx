@@ -228,7 +228,7 @@ const ShowcaseCard = ({ card, isFocused, onFocus }) => {
               </button>
               <button className="action-item download" onClick={handleDownload} title="Download PNG" disabled={downloading}>
                 {downloading && !progress ? <FiLoader className="spinner-mini" size={16} /> : <FiDownload size={16} />}
-                <span>{downloading && !progress ? '...' : 'Save PNG'}</span>
+                <span>{downloading && !progress ? '...' : 'Save'}</span>
               </button>
               {(state.bgImgUrl?.toLowerCase().includes('.gif') || state.bgImgUrl?.startsWith('data:image/gif')) && (
                 <button className="action-item download" onClick={handleDownloadGif} title="Download GIF" disabled={downloading}>
