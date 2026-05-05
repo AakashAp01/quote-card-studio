@@ -8,6 +8,7 @@ import TextSection from './TextSection';
 import CardStyleSection from './CardStyleSection';
 import WatermarkSection from './WatermarkSection';
 import SavedCardsPanel from './SavedCardsPanel';
+import TemplateSection from './TemplateSection';
 
 export default function Sidebar({
   state,
@@ -18,6 +19,7 @@ export default function Sidebar({
   removeHighlight,
   setGradientPreset,
   loadCardState,
+  applyPreset,
   onClose,
 }) {
   return (
@@ -114,6 +116,7 @@ export default function Sidebar({
         setField={setField}
       />
 
+      <TemplateSection applyPreset={applyPreset} />
       <div style={{ height: 8 }} />
     </aside>
   );

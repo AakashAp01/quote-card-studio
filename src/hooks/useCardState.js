@@ -93,6 +93,12 @@ function reducer(state, action) {
         shouldDownload: autoDownload
       };
     }
+    case 'APPLY_PRESET': {
+      return {
+        ...state,
+        ...action.payload
+      };
+    }
 
     default:
       return state;
@@ -141,6 +147,11 @@ export default function useCardState() {
     []
   );
 
+  const applyPreset = useCallback(
+    (preset) => dispatch({ type: 'APPLY_PRESET', payload: preset }),
+    []
+  );
+
   return {
     state,
     setField,
@@ -150,5 +161,6 @@ export default function useCardState() {
     removeHighlight,
     setGradientPreset,
     loadCardState,
+    applyPreset,
   };
 }

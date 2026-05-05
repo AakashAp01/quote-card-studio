@@ -17,7 +17,8 @@ function Editor({
   addHighlight, 
   removeHighlight, 
   setGradientPreset, 
-  loadCardState 
+  loadCardState,
+  applyPreset
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
@@ -59,6 +60,7 @@ function Editor({
           removeHighlight={removeHighlight}
           setGradientPreset={setGradientPreset}
           loadCardState={loadCardState}
+          applyPreset={applyPreset}
           onClose={() => setSidebarOpen(false)}
         />
       </div>
@@ -87,6 +89,7 @@ export default function App() {
     removeHighlight,
     setGradientPreset,
     loadCardState,
+    applyPreset,
   } = useCardState();
 
   return (
@@ -103,6 +106,7 @@ export default function App() {
               removeHighlight={removeHighlight}
               setGradientPreset={setGradientPreset}
               loadCardState={loadCardState}
+              applyPreset={applyPreset}
             />
           } />
           <Route path="/showcase" element={<Showcase />} />
