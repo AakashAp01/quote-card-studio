@@ -191,10 +191,10 @@ export default function Showcase() {
               {visibleCount < publicCards.length && (
                 <button 
                   className="btn btn-primary load-more-btn"
-                  onClick={() => setVisibleCount(prev => prev + 15)}
+                  onClick={() => setVisibleCount(prev => prev + 10)}
                 >
-                  <FiLoader size={16} style={{ marginRight: 8 }} />
-                  <span>Load More Designs</span>
+                  <FiLoader size={16} style={{ marginRight: 5 }} />
+                  <span>Load More</span>
                 </button>
               )}
               <button 
