@@ -14,12 +14,39 @@ export function AuthProvider({ children }) {
       setProfile(null);
       return;
     }
-    const { data } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', userId)
-      .single();
-    setProfile(data);
+    
+    try {
+      let { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single();
+      
+      if (error || !data) {
+        // If profile missing but user exists, try to auto-create it (self-healing)
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user && user.id === userId) {
+          const username = user.user_metadata?.username || user.email?.split('@')[0] || 'User';
+          const { data: newProfile, error: insertError } = await supabase
+            .from('profiles')
+            .upsert({
+              id: userId,
+              username: username,
+              email: user.email,
+              updated_at: new Date().toISOString()
+            })
+            .select()
+            .single();
+          
+          if (!insertError) {
+            data = newProfile;
+          }
+        }
+      }
+      setProfile(data);
+    } catch (err) {
+      console.error('Error fetching/creating profile:', err);
+    }
   }, []);
 
   useEffect(() => {
@@ -59,7 +86,26 @@ export function AuthProvider({ children }) {
         data: { username }
       }
     });
+
     if (error) throw error;
+
+    // 2. Manually create profile record if user is created (and possibly auto-logged in)
+    if (data?.user) {
+      try {
+        await supabase
+          .from('profiles')
+          .upsert({
+            id: data.user.id,
+            username: username.trim(),
+            email: email.trim(),
+            updated_at: new Date().toISOString()
+          });
+      } catch (profileErr) {
+        console.warn('Profile record creation delayed or failed:', profileErr.message);
+        // We don't throw here to avoid blocking the signup flow if RLS is strict
+      }
+    }
+
     return data;
   }, []);
 

@@ -8,7 +8,6 @@
 }
 
 .showcase-header {
-  display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 40px;
@@ -265,6 +264,12 @@
   text-align: center;
   padding: 100px 0;
   color: #888;
+}
+
+.empty-subtitle {
+  font-size: 14px;
+  color: #666;
+  margin-top: 10px;
 }
 
 @media (max-width: 1024px) {

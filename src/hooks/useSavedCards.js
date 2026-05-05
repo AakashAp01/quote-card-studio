@@ -40,15 +40,44 @@ export default function useSavedCards() {
 
   const loadPublicCards = useCallback(async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from('saved_cards')
-      .select('*, profiles(username)')
-      .eq('is_public', true)
-      .order('created_at', { ascending: false });
+    try {
+      // 1. Fetch public cards directly (without join) to ensure we get data
+      const { data: cards, error: cardsError } = await supabase
+        .from('saved_cards')
+        .select('*')
+        .eq('is_public', true)
+        .order('created_at', { ascending: false });
 
-    setLoading(false);
-    if (error) throw error;
-    return data || [];
+      if (cardsError) throw cardsError;
+      if (!cards || cards.length === 0) return [];
+
+      // 2. Fetch profiles for these cards separately
+      const userIds = [...new Set(cards.map(c => c.user_id))].filter(Boolean);
+      
+      let profileMap = {};
+      if (userIds.length > 0) {
+        const { data: profiles, error: profileError } = await supabase
+          .from('profiles')
+          .select('id, username')
+          .in('id', userIds);
+        
+        if (!profileError && profiles) {
+          profiles.forEach(p => {
+            profileMap[p.id] = p;
+          });
+        }
+      }
+
+      // 3. Manually merge the data
+      const mergedData = cards.map(card => ({
+        ...card,
+        profiles: profileMap[card.user_id] || null
+      }));
+
+      return mergedData;
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   const loadCard = useCallback(async (id) => {

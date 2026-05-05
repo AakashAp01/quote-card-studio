@@ -1,4 +1,4 @@
-import { useRef, useCallback, useState } from 'react';
+import { useRef, useCallback, useState, useEffect } from 'react';
 import { FiDownload, FiLinkedin, FiGithub, FiTwitter, FiGrid } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { toPng, toJpeg, toSvg } from 'html-to-image';
@@ -15,9 +15,12 @@ const FORMATS = [
 ];
 
 export default function Preview({ state, onSignInClick }) {
+  const containerRef = useRef(null);
   const cardRef = useRef(null);
   const [downloading, setDownloading] = useState(false);
   const [format, setFormat] = useState('png');
+  const [scale, setScale] = useState(1);
+  const [autoHeight, setAutoHeight] = useState('auto');
 
   const handleDownload = useCallback(async () => {
     if (!cardRef.current) return;
@@ -70,6 +73,37 @@ export default function Preview({ state, onSignInClick }) {
 
   const [w, h] = RATIO_MAP[state.ratio];
 
+  useEffect(() => {
+    const updateScale = () => {
+      if (containerRef.current) {
+        const actualWidth = containerRef.current.offsetWidth;
+        const baseW = w || 480;
+        const newScale = actualWidth / baseW;
+        setScale(newScale);
+        
+        if (state.ratio === 'free' && cardRef.current) {
+          setAutoHeight(cardRef.current.scrollHeight * newScale);
+        }
+      }
+    };
+
+    const observer = new ResizeObserver(updateScale);
+    if (containerRef.current) observer.observe(containerRef.current);
+    if (cardRef.current) observer.observe(cardRef.current);
+    
+    updateScale();
+    const timer = setTimeout(updateScale, 100);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(timer);
+    };
+  }, [w, state.ratio]);
+
+  const containerStyle = state.ratio === 'free' 
+    ? { height: autoHeight } 
+    : { aspectRatio: `${w} / ${h}` };
+
   return (
     <div className="preview-area">
       <div className="preview-topbar">
@@ -115,7 +149,26 @@ export default function Preview({ state, onSignInClick }) {
       </div>
 
       <div className="preview-canvas">
-        <CardPreview state={state} cardRef={cardRef} />
+        <div 
+          className="preview-card-container" 
+          ref={containerRef}
+          style={containerStyle}
+        >
+          <div 
+            className="preview-card-scaler" 
+            style={{ 
+              transform: `scale(${scale})`,
+              transformOrigin: 'top left',
+              width: w || 480,
+              height: state.ratio === 'free' ? 'auto' : (h || 480),
+              position: 'absolute',
+              top: 0,
+              left: 0
+            }}
+          >
+            <CardPreview state={state} cardRef={cardRef} />
+          </div>
+        </div>
       </div>
 
       <div className="preview-footer">

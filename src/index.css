@@ -26,7 +26,7 @@ body {
 
 ::-webkit-scrollbar-thumb {
   background: #3a3a45;
-  border-radius: 3px;
+  border-radius: 0px;
 }
 
 /* ─── Panel ─────────────────────────────── */
@@ -475,22 +475,12 @@ input[type="color"]::-webkit-color-swatch {
   .preview-footer {
     padding: 8px 16px;
   }
-
-  #card-preview {
-    max-width: 90vw !important;
-    transform: scale(0.85);
-    transform-origin: center center;
-  }
 }
 
 @media (max-width: 600px) {
   .preview-canvas {
     padding: 12px;
     min-height: 300px;
-  }
-
-  #card-preview {
-    transform: scale(0.7);
   }
 
   .preview-actions {

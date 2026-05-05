@@ -145,7 +145,6 @@ export default function Showcase() {
 
   const visibleCards = publicCards.slice(0, visibleCount);
 
-  // Split cards into columns
   const columns = Array.from({ length: columnCount }, () => []);
   visibleCards.forEach((card, index) => {
     columns[index % columnCount].push(card);
@@ -173,7 +172,8 @@ export default function Showcase() {
           </div>
         ) : publicCards.length === 0 ? (
           <div className="showcase-empty">
-            <p>No public designs yet. Be the first to share!</p>
+            <p>No public designs found.</p>
+            <p className="empty-subtitle">Be the first to share your creativity with the community!</p>
           </div>
         ) : (
           <>
