@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { HashRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { FiMenu } from 'react-icons/fi';
 import './App.css';
 import { AuthProvider, useAuth } from './context/AuthContext';
@@ -94,7 +94,7 @@ export default function App() {
 
   return (
     <AuthProvider>
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
           <Route path="/" element={
             <Editor
@@ -111,7 +111,7 @@ export default function App() {
           } />
           <Route path="/showcase" element={<Showcase />} />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </AuthProvider>
   );
 }
