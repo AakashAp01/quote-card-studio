@@ -1,29 +1,32 @@
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiArrowLeft, FiLoader, FiEdit2 } from 'react-icons/fi';
+import { FiArrowLeft, FiLoader, FiEdit2, FiShare2, FiDownload, FiMoreVertical, FiCheck } from 'react-icons/fi';
+import { toPng } from 'html-to-image';
 import useSavedCards from '../hooks/useSavedCards';
 import CardPreview from '../components/Preview/CardPreview';
 import { RATIO_MAP } from '../constants';
 import './Showcase.css';
 
-const ShowcaseCard = ({ card }) => {
+const ShowcaseCard = ({ card, isFocused, onFocus }) => {
   const navigate = useNavigate();
   const containerRef = useRef(null);
   const cardRef = useRef(null);
   const [scale, setScale] = useState(1);
   const [autoHeight, setAutoHeight] = useState('auto');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [downloading, setDownloading] = useState(false);
+  const [copied, setCopied] = useState(false);
   
   const state = card.card_state;
   const ratio = state.ratio || 'square';
   const [origW, origH] = RATIO_MAP[ratio] || [480, 480];
-  const [isActive, setIsActive] = useState(false);
 
   const handleCardClick = (e) => {
     if (window.innerWidth <= 768) {
-      if (!isActive) {
+      if (!isFocused) {
         e.preventDefault();
         e.stopPropagation();
-        setIsActive(true);
+        onFocus();
       }
     } else {
       navigate('/', { state: { loadCard: card } });
@@ -34,6 +37,68 @@ const ShowcaseCard = ({ card }) => {
     e.stopPropagation();
     navigate('/', { state: { loadCard: card } });
   };
+
+  const handleShare = async (e) => {
+    e.stopPropagation();
+    const shareUrl = `${window.location.origin}${window.location.pathname}#/?cardId=${card.id}`;
+    
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: `Check out this design: ${card.name}`,
+          text: `I found this amazing quote card design by ${card.profiles?.username || 'a creator'} on Quote Card Studio!`,
+          url: shareUrl,
+        });
+      } catch (err) {
+        if (err.name !== 'AbortError') console.error('Share failed:', err);
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      } catch (err) {
+        console.error('Copy failed:', err);
+      }
+    }
+    setIsMenuOpen(false);
+  };
+
+  const handleDownload = async (e) => {
+    e.stopPropagation();
+    if (!cardRef.current || downloading) return;
+    
+    setDownloading(true);
+    try {
+      const dataUrl = await toPng(cardRef.current, {
+        quality: 1,
+        pixelRatio: 3,
+        cacheBust: true,
+        style: { margin: 0, transform: 'none' },
+      });
+      
+      const link = document.createElement('a');
+      link.download = `${card.name.replace(/\s+/g, '-').toLowerCase() || 'quote-card'}.png`;
+      link.href = dataUrl;
+      link.click();
+    } catch (err) {
+      console.error('Download failed:', err);
+      alert('Failed to generate image. Please try again.');
+    } finally {
+      setDownloading(false);
+      setIsMenuOpen(false);
+    }
+  };
+
+  const toggleMenu = (e) => {
+    e.stopPropagation();
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  // Close menu if card loses focus
+  useEffect(() => {
+    if (!isFocused) setIsMenuOpen(false);
+  }, [isFocused]);
 
 
 
@@ -69,8 +134,8 @@ const ShowcaseCard = ({ card }) => {
     : { aspectRatio: `${origW} / ${origH}` };
 
   return (
-    <div className={`masonry-item ${isActive ? 'mobile-active' : ''}`}>
-      <div className="card-wrapper" onClick={handleCardClick}>
+    <div className={`masonry-item ${isFocused ? 'mobile-active' : ''}`}>
+      <div className={`card-wrapper ${isMenuOpen ? 'menu-open' : ''}`} onClick={handleCardClick}>
         <div 
           className={`card-preview-container ratio-${ratio}`} 
           ref={containerRef}
@@ -96,10 +161,30 @@ const ShowcaseCard = ({ card }) => {
             <span className="card-name">{card.name}</span>
             <span className="card-author">by <span className="showcase-username">{card.profiles?.username || card.user_email?.split('@')[0] || 'User'}</span></span>
           </div>
-          <div className="card-actions-mini">
-            <button className="card-action-btn-mini edit" onClick={handleEdit} title="Edit Design">
-              <FiEdit2 size={16} />
+          
+          <div className={`card-actions-mini ${isMenuOpen ? 'menu-active' : ''}`}>
+            <button 
+              className={`card-action-btn-mini menu-toggle-btn ${isMenuOpen ? 'active' : ''}`} 
+              onClick={toggleMenu}
+              title="Actions"
+            >
+              <FiMoreVertical size={18} />
             </button>
+            
+            <div className={`actions-dropdown ${isMenuOpen ? 'open' : ''}`}>
+              <button className="action-item edit" onClick={handleEdit} title="Edit Design">
+                <FiEdit2 size={16} />
+                <span>Edit</span>
+              </button>
+              <button className="action-item share" onClick={handleShare} title="Share Design">
+                {copied ? <FiCheck size={16} /> : <FiShare2 size={16} />}
+                <span>{copied ? 'Copied' : 'Share'}</span>
+              </button>
+              <button className="action-item download" onClick={handleDownload} title="Download Image" disabled={downloading}>
+                {downloading ? <FiLoader className="spinner-mini" size={16} /> : <FiDownload size={16} />}
+                <span>{downloading ? '...' : 'Save'}</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -113,7 +198,18 @@ export default function Showcase() {
   const [publicCards, setPublicCards] = useState([]);
   const [error, setError] = useState(null);
   const [columnCount, setColumnCount] = useState(4);
+  const [focusedCardId, setFocusedCardId] = useState(null);
   const gridRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (gridRef.current && !gridRef.current.contains(e.target)) {
+        setFocusedCardId(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const [visibleCount, setVisibleCount] = useState(10);
 
@@ -177,11 +273,16 @@ export default function Showcase() {
           </div>
         ) : (
           <>
-            <div className="masonry-grid-flex">
+            <div className="masonry-grid-flex" ref={gridRef}>
               {columns.map((col, colIndex) => (
                 <div key={colIndex} className="masonry-column">
                   {col.map((card) => (
-                    <ShowcaseCard key={card.id} card={card} />
+                    <ShowcaseCard 
+                      key={card.id} 
+                      card={card} 
+                      isFocused={focusedCardId === card.id}
+                      onFocus={() => setFocusedCardId(card.id)}
+                    />
                   ))}
                 </div>
               ))}

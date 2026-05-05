@@ -8,6 +8,7 @@ import Preview from './components/Preview/Preview';
 import AuthModal from './components/Auth/AuthModal';
 import Showcase from './pages/Showcase';
 import useCardState from './hooks/useCardState';
+import useSavedCards from './hooks/useSavedCards';
 
 function Editor({ 
   state, 
@@ -25,6 +26,8 @@ function Editor({
   const { recoveryMode } = useAuth();
   const location = useLocation();
 
+  const { loadCard } = useSavedCards();
+
   useEffect(() => {
     if (recoveryMode) {
       setAuthOpen(true);
@@ -32,12 +35,28 @@ function Editor({
   }, [recoveryMode]);
 
   useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const cardId = searchParams.get('cardId');
+
     if (location.state?.loadCard) {
       loadCardState(location.state.loadCard, location.state.autoDownload);
       // Clear state so it doesn't reload on every mount
       window.history.replaceState({}, document.title);
+    } else if (cardId) {
+      // Load card by ID from URL
+      loadCard(cardId).then(data => {
+        if (data) {
+          loadCardState(data);
+        }
+      }).catch(err => {
+        console.error('Failed to load shared card:', err);
+      });
+      
+      // Clean up URL
+      const newUrl = window.location.hash.split('?')[0];
+      window.history.replaceState({}, document.title, `#${newUrl}`);
     }
-  }, [location, loadCardState]);
+  }, [location, loadCardState, loadCard]);
 
   return (
     <div className="app-layout">

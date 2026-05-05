@@ -83,17 +83,32 @@
 
 .masonry-item {
   width: 100%;
+  position: relative;
+  transition: z-index 0.3s;
+}
+
+.masonry-item:hover,
+.masonry-item.mobile-active {
+  z-index: 10;
+}
+
+.masonry-item:has(.actions-dropdown.open) {
+  z-index: 100;
 }
 
 .card-wrapper {
   position: relative;
   background: #16161a;
-  border-radius: 16px;
+  border-radius: 15px;
   border: 1px solid #2a2a32;
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
   cursor: pointer;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.card-wrapper.menu-open {
+  overflow: visible;
 }
 
 .card-wrapper:hover {
@@ -107,6 +122,7 @@
   position: relative;
   overflow: hidden;
   display: block;
+  border-radius: inherit;
 }
 
 .card-wrapper:hover .card-preview-container {
@@ -136,8 +152,9 @@
   padding: 24px;
   opacity: 0;
   transition: opacity 0.3s ease;
-  z-index: 5;
+  z-index: 10;
   pointer-events: none;
+  border-radius: inherit;
 }
 
 .card-wrapper:hover .card-overlay {
@@ -174,7 +191,7 @@
   position: absolute;
   top: 16px;
   right: 16px;
-  z-index: 10;
+  z-index: 20;
   opacity: 0;
   transform: translateY(-10px);
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -207,6 +224,83 @@
 
 .card-action-btn-mini.edit {
   background: #5a5aff;
+}
+
+.menu-toggle-btn {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  z-index: 15;
+}
+
+.menu-toggle-btn.active {
+  background: #5a5aff;
+  border-color: #5a5aff;
+}
+
+.actions-dropdown {
+  position: absolute;
+  top: 44px;
+  right: 0;
+  background: rgba(25, 25, 30, 0.95);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 120px;
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.actions-dropdown.open {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.action-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: #ccc;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+  text-align: left;
+}
+
+.action-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+.action-item.edit:hover {
+  color: #5a5aff;
+}
+
+.action-item.share:hover {
+  color: #00d2ff;
+}
+
+.action-item.download:hover {
+  color: #00ff87;
+}
+
+.spinner-mini {
+  animation: spin 1s linear infinite;
 }
 
 .card-action-btn-mini:hover {
