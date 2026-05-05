@@ -40,10 +40,8 @@ function Editor({
 
     if (location.state?.loadCard) {
       loadCardState(location.state.loadCard, location.state.autoDownload);
-      // Clear state so it doesn't reload on every mount
       window.history.replaceState({}, document.title);
     } else if (cardId) {
-      // Load card by ID from URL
       loadCard(cardId).then(data => {
         if (data) {
           loadCardState(data);
@@ -52,7 +50,6 @@ function Editor({
         console.error('Failed to load shared card:', err);
       });
       
-      // Clean up URL
       const newUrl = window.location.hash.split('?')[0];
       window.history.replaceState({}, document.title, `#${newUrl}`);
     }

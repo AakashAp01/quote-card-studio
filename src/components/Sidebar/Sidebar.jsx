@@ -27,7 +27,7 @@ export default function Sidebar({
       <div className="sidebar-header">
         <div>
           <div className="sidebar-title">
-            Quote Card <span className="accent">Studio</span>
+            Quote <span className="accent">Studio</span>
           </div>
           <div className="sidebar-subtitle">Design beautiful quote cards</div>
         </div>
@@ -38,90 +38,92 @@ export default function Sidebar({
         )}
       </div>
 
-      <SavedCardsPanel state={state} onLoadCard={loadCardState} />
+      <div className="sidebar-content">
+        <SavedCardsPanel state={state} onLoadCard={loadCardState} />
 
-      <QuoteSection
-        quoteText={state.quoteText}
-        authorText={state.authorText}
-        setField={setField}
-      />
+        <QuoteSection
+          quoteText={state.quoteText}
+          authorText={state.authorText}
+          setField={setField}
+        />
 
-      <HighlightSection
-        highlights={state.highlights}
-        hlColor={state.hlColor}
-        hlOpacity={state.hlOpacity}
-        addHighlight={addHighlight}
-        removeHighlight={removeHighlight}
-        setField={setField}
-      />
+        <HighlightSection
+          highlights={state.highlights}
+          hlColor={state.hlColor}
+          hlOpacity={state.hlOpacity}
+          addHighlight={addHighlight}
+          removeHighlight={removeHighlight}
+          setField={setField}
+        />
 
-      <FontSection
-        font={state.font}
-        customFontName={state.customFontName}
-        gfontUrl={state.gfontUrl}
-        fontSize={state.fontSize}
-        lineHeight={state.lineHeight}
-        fontWeight={state.fontWeight}
-        italic={state.italic}
-        align={state.align}
-        setField={setField}
-        setFont={setFont}
-        setCustomFont={setCustomFont}
-      />
+        <FontSection
+          font={state.font}
+          customFontName={state.customFontName}
+          gfontUrl={state.gfontUrl}
+          fontSize={state.fontSize}
+          lineHeight={state.lineHeight}
+          fontWeight={state.fontWeight}
+          italic={state.italic}
+          align={state.align}
+          setField={setField}
+          setFont={setFont}
+          setCustomFont={setCustomFont}
+        />
 
-      <BackgroundSection
-        bgTab={state.bgTab}
-        bgColor={state.bgColor}
-        gradC1={state.gradC1}
-        gradC2={state.gradC2}
-        gradAngle={state.gradAngle}
-        bgImgUrl={state.bgImgUrl}
-        overlayColor={state.overlayColor}
-        overlayOpacity={state.overlayOpacity}
-        patternEmoji={state.patternEmoji}
-        patternSize={state.patternSize}
-        patternSpacing={state.patternSpacing}
-        patternOpacity={state.patternOpacity}
-        patternRotation={state.patternRotation}
-        patternBgColor={state.patternBgColor}
-        setField={setField}
-        setGradientPreset={setGradientPreset}
-      />
+        <BackgroundSection
+          bgTab={state.bgTab}
+          bgColor={state.bgColor}
+          gradC1={state.gradC1}
+          gradC2={state.gradC2}
+          gradAngle={state.gradAngle}
+          bgImgUrl={state.bgImgUrl}
+          overlayColor={state.overlayColor}
+          overlayOpacity={state.overlayOpacity}
+          patternEmoji={state.patternEmoji}
+          patternSize={state.patternSize}
+          patternSpacing={state.patternSpacing}
+          patternOpacity={state.patternOpacity}
+          patternRotation={state.patternRotation}
+          patternBgColor={state.patternBgColor}
+          setField={setField}
+          setGradientPreset={setGradientPreset}
+        />
 
-      <TextSection
-        textColor={state.textColor}
-        showQuotes={state.showQuotes}
-        setField={setField}
-      />
+        <TextSection
+          textColor={state.textColor}
+          showQuotes={state.showQuotes}
+          setField={setField}
+        />
 
-      <CardStyleSection
-        ratio={state.ratio}
-        padding={state.padding}
-        radius={state.radius}
-        shadow={state.shadow}
-        showBorder={state.showBorder}
-        borderColor={state.borderColor}
-        borderWidth={state.borderWidth}
-        borderStyle={state.borderStyle}
-        glassMode={state.glassMode}
-        glassBlur={state.glassBlur}
-        glassOpacity={state.glassOpacity}
-        noiseOpacity={state.noiseOpacity}
-        setField={setField}
-      />
+        <CardStyleSection
+          ratio={state.ratio}
+          padding={state.padding}
+          radius={state.radius}
+          shadow={state.shadow}
+          showBorder={state.showBorder}
+          borderColor={state.borderColor}
+          borderWidth={state.borderWidth}
+          borderStyle={state.borderStyle}
+          glassMode={state.glassMode}
+          glassBlur={state.glassBlur}
+          glassOpacity={state.glassOpacity}
+          noiseOpacity={state.noiseOpacity}
+          setField={setField}
+        />
 
-      <WatermarkSection
-        showWatermark={state.showWatermark}
-        watermarkText={state.watermarkText}
-        watermarkColor={state.watermarkColor}
-        watermarkFontSize={state.watermarkFontSize}
-        watermarkOpacity={state.watermarkOpacity}
-        watermarkPosition={state.watermarkPosition}
-        setField={setField}
-      />
+        <WatermarkSection
+          showWatermark={state.showWatermark}
+          watermarkText={state.watermarkText}
+          watermarkColor={state.watermarkColor}
+          watermarkFontSize={state.watermarkFontSize}
+          watermarkOpacity={state.watermarkOpacity}
+          watermarkPosition={state.watermarkPosition}
+          setField={setField}
+        />
 
-      <TemplateSection applyPreset={applyPreset} />
-      <div style={{ height: 8 }} />
+        <TemplateSection applyPreset={applyPreset} />
+        <div style={{ height: 8 }} />
+      </div>
     </aside>
   );
 }
