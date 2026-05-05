@@ -188,22 +188,23 @@ export default function Showcase() {
             </div>
 
             <div className="showcase-footer">
+              <button 
+                className="btn btn-ghost showcase-back-btn"
+                onClick={() => navigate('/')}
+              >
+                <FiArrowLeft size={16} />
+                <span> Back</span>
+              </button>
               {visibleCount < publicCards.length && (
                 <button 
-                  className="btn btn-primary load-more-btn"
+                  className="btn btn-primary load-more-btn showcase-back-btn"
                   onClick={() => setVisibleCount(prev => prev + 10)}
                 >
                   <FiLoader size={16} style={{ marginRight: 5 }} />
                   <span>Load More</span>
                 </button>
               )}
-              <button 
-                className="btn btn-ghost showcase-back-btn"
-                onClick={() => navigate('/')}
-              >
-                <FiArrowLeft size={16} />
-                <span> Back to Editor</span>
-              </button>
+              
             </div>
           </>
         )}

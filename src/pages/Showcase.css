@@ -323,29 +323,20 @@
 
 .showcase-footer {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 24px;
+  justify-content: center;
+  gap: 15px;
   margin-top: 60px;
   padding-top: 40px;
   border-top: 1px solid #1e1e26;
 }
 
 .load-more-btn {
-  padding: 14px 32px;
-  font-size: 14px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  transition: all 0.2s;
+  background-color: #5a5aff !important;
+  color: #fff !important;
 }
 
-.load-more-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(90, 90, 255, 0.3);
-}
 
 @media (max-width: 480px) {
   .showcase-footer {
@@ -353,10 +344,6 @@
     padding-top: 30px;
   }
   
-  .load-more-btn {
-    width: 100%;
-    padding: 16px;
-  }
 }
 /* 
   Reset conflicting Editor-specific styles from index.css 
