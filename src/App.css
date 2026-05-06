@@ -1,92 +1,189 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  background: #0a0a0c;
+}
+
+.full-navbar {
+  height: 60px;
+  background: #0e0e10;
+  border-bottom: 1px solid #1e1e26;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  flex-shrink: 0;
+  z-index: 1100;
+}
+
+.navbar-logo {
+  margin-right: 20px;
+}
+
+.logo-title {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.logo-title .accent {
+  color: #5a5aff;
+}
+
+.nav-left, .nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .app-layout {
   display: flex;
-  height: 100vh;
+  flex: 1;
   overflow: hidden;
   position: relative;
 }
 
-.sidebar-wrapper {
-  flex-shrink: 0;
-  height: 100%;
-}
+/* ─── Buttons ───────────────────────────── */
 
-.mobile-toggle {
-  display: none;
-  position: fixed;
-  top: 14px;
-  left: 24px;
-  z-index: 1000;
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
-  border: 1px solid #2e2e38;
-  background: #1e1e24;
-  color: #e8e8e8;
-  font-size: 16px;
-  cursor: pointer;
+.download-btn {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+  padding: 0 10px;
+  height: 32px;
+  font-weight: 600 !important;
+  background: #5a5aff;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  transition: all 0.2s;
+  text-decoration: none !important;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.download-btn:hover {
+  background: #4a4aff;
+  transform: translateY(-1px);
+}
+
+.download-btn:active {
+  transform: translateY(0);
+}
+
+.github-btn {
+  background: #1e1e24;
+  color: #aaa !important;
+  box-shadow: inset 0 0 0 1px #2e2e38;
+}
+
+.github-btn:hover {
+  background: #2a2a32;
+  box-shadow: inset 0 0 0 1px #5a5aff;
+  color: #fff !important;
+}
+
+.mobile-sidebar-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #1e1e24;
+  color: #aaa;
+  border: 1px solid #2e2e38;
+  cursor: pointer;
   transition: all 0.2s;
 }
 
-.mobile-toggle:hover {
-  background: #25252e;
+.mobile-sidebar-toggle:hover {
+  background: #2a2a32;
   border-color: #5a5aff;
+  color: #fff;
 }
 
-.mobile-toggle.hidden {
-  display: none !important;
-}
+/* ─── Layout Components ──────────────────── */
 
-.mobile-overlay {
-  display: none;
+.sidebar-wrapper {
+  height: 100%;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;
 }
 
 /* ─── Responsive ────────────────────────── */
 
 @media (max-width: 900px) {
-  .app-layout {
-    flex-direction: column;
+  .mobile-sidebar-toggle {
+    display: flex;
   }
 
-  .mobile-toggle {
+  .floating-actions {
+    width: calc(100% - 48px);
     display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
   .sidebar-wrapper {
     position: fixed;
-    top: 0;
+    top: 60px;
     left: 0;
     bottom: 0;
-    height: 100dvh;
-    z-index: 900;
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
     width: 320px;
-    max-width: 85vw;
+    transform: translateX(-110%);
+    background: #0e0e10;
+    box-shadow: none;
+    visibility: hidden;
+    pointer-events: none;
   }
 
   .sidebar-wrapper.open {
     transform: translateX(0);
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
+    visibility: visible;
+    pointer-events: auto;
   }
 
   .mobile-overlay {
     display: block;
     position: fixed;
+    top: 60px;
     inset: 0;
-    z-index: 800;
+    z-index: 900;
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(2px);
   }
 }
 
 @media (max-width: 650px) {
-  .sidebar-wrapper {
-    width: 100vw;
-    max-width: 100vw;
+  .nav-right > .download-btn span {
+    display: none;
   }
-  .mobile-toggle {
+  
+  .full-navbar {
+    padding: 0 16px;
+  }
+  
+  .floating-actions {
+    width: calc(100% - 24px);
     top: 12px;
-    left: 16px;
+    right: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-title {
+    font-size: 16px;
+  }
+  .navbar-logo {
+    margin-right: 12px;
   }
 }

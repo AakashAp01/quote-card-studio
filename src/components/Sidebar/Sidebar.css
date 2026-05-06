@@ -83,14 +83,16 @@
 }
 
 .sidebar-header {
-  height: 64px;
+  display: none;
   padding: 0 20px;
-  display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #1e1e26;
   background: #0e0e10;
   box-sizing: border-box;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .sidebar-close-btn {
@@ -111,6 +113,10 @@
 }
 
 @media (max-width: 900px) {
+  .sidebar-header {
+    display: flex;
+    height: 64px;
+  }
   .sidebar-close-btn {
     display: flex;
     align-items: center;
@@ -124,18 +130,10 @@
   }
 }
 
-.sidebar-title {
-  font-size: 18px;
+.sidebar-header-label {
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: -0.02em;
-}
-
-.sidebar-title .accent {
-  color: #5a5aff;
-}
-
-.sidebar-subtitle {
-  font-size: 11px;
   color: #555;
-  margin-top: 2px;
-}
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}

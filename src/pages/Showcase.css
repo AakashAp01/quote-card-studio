@@ -57,6 +57,162 @@
   font-size: 14px;
 }
 
+.showcase-search-area {
+  margin: 50px auto 10px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 0 20px;
+}
+
+.search-container-pill {
+  display: flex;
+  align-items: center;
+  background: rgba(18, 18, 22, 0.7);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  height: 56px;
+  width: 100%;
+  max-width: 720px;
+  padding: 0 8px;
+  transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+  position: relative;
+}
+
+.search-container-pill:hover {
+  border-color: rgba(90, 90, 255, 0.3);
+  background: rgba(18, 18, 22, 0.85);
+  transform: translateY(-2px);
+}
+
+.search-container-pill:focus-within {
+  border-color: #5a5aff;
+  background: #0f0f15;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  flex-shrink: 0;
+}
+
+.filter-icon {
+  color: #5a5aff;
+  margin-right: 10px;
+  opacity: 0.8;
+}
+
+.pill-select {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 14px;
+  font-weight:600;
+  cursor: pointer;
+  outline: none;
+  min-width: 120px;
+  padding-right: 24px;
+  font-family: inherit;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right center;
+  transition: all 0.3s;
+}
+
+.pill-select:hover {
+  color: #5a5aff;
+}
+
+.pill-select option {
+  background: #16161a;
+  color: #fff;
+}
+
+.pill-select optgroup {
+  background: #16161a;
+  color: #5a5aff;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.divider-vertical {
+  width: 1px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0 16px;
+}
+
+.search-group {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding-right: 12px;
+}
+
+.search-pill-icon {
+  color: #555;
+  margin-right: 12px;
+  transition: all 0.3s;
+}
+
+.search-container-pill:focus-within .search-pill-icon {
+  color: #5a5aff;
+  transform: scale(1.1);
+}
+
+.pill-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 15px;
+  outline: none;
+  font-family: inherit;
+  letter-spacing: 0.01em;
+}
+
+.pill-input::placeholder {
+  color: #444;
+  transition: all 0.3s;
+}
+
+.search-container-pill:focus-within .pill-input::placeholder {
+  color: #2a2a32;
+}
+
+@media (max-width: 600px) {
+  .search-container-pill {
+    height: auto;
+    flex-direction: column;
+    border-radius: 15px;
+    padding: 12px 8px;
+  }
+  
+  .divider-vertical {
+    width: 80%;
+    height: 1px;
+    margin: 8px 0;
+  }
+  
+  .filter-group {
+    width: 100%;
+    padding-left: 12px;
+    margin-bottom: 4px;
+  }
+  
+  .pill-select {
+    width: 100%;
+  }
+  
+  .search-group {
+    width: 100%;
+    padding-left: 12px;
+  }
+}
+
 .showcase-content {
   flex: 1;
   max-width: 1400px;
@@ -316,7 +472,6 @@
   background: #4a4aff;
 }
 
-/* Mobile Active State */
 .masonry-item.mobile-active .card-overlay {
   opacity: 1;
 }
@@ -328,12 +483,12 @@
 }
 
 .showcase-username {
-  color: #4a4aff;
+  color: #5a5aff;
   font-weight: 600;
 }
 
 .accent{
-  color: #4a4aff;
+  color: #5a5aff;
 }
 
 .showcase-loading {
@@ -426,6 +581,27 @@
   border-top: 1px solid #1e1e26;
 }
 
+@media (max-width: 600px) {
+  .joint-search-bar {
+    flex-direction: column;
+    max-width: 100%;
+  }
+  
+  .search-group-select {
+    border-right: none;
+    border-bottom: 1px solid #2a2a32;
+  }
+  
+  .search-user-select {
+    width: 100%;
+    height: 40px;
+  }
+  
+  .search-input {
+    height: 44px;
+  }
+}
+
 .load-more-btn {
   background-color: #5a5aff !important;
   color: #fff !important;
@@ -439,10 +615,7 @@
   }
   
 }
-/* 
-  Reset conflicting Editor-specific styles from index.css 
-  to ensure the Showcase masonry scaling works perfectly.
-*/
+
 .showcase-page #card-preview {
   max-width: none !important;
   transform: none !important;

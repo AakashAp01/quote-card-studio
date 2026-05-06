@@ -1,18 +1,25 @@
 .sign-in-btn {
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 0 12px !important;
   gap: 6px;
-  padding: 8px 8px !important;
   background: #1e1e24;
   color: #aaa;
   border: 1px solid #2e2e38;
   border-radius: 8px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.15s;
   font-family: inherit;
   white-space: nowrap;
+  line-height: 1;
+}
+
+.sign-in-btn span {
+  margin-top: 1px;
 }
 
 .sign-in-btn:hover {
@@ -28,7 +35,7 @@
 .user-menu-trigger {
   display: flex;
   align-items: center;
-  gap: 8px;
+  height: 32px;
   padding: 3px;
   background: #1e1e24;
   border: 1px solid #2e2e38;
@@ -115,18 +122,23 @@
 .user-dropdown-item {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   width: 100%;
-  padding: 8px 10px;
+  padding: 10px 12px;
   background: none;
   border: none;
   color: #aaa;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   cursor: pointer;
-  border-radius: 6px;
+  border-radius: 8px;
   transition: all 0.15s;
   font-family: inherit;
+  line-height: 1;
+}
+
+.user-dropdown-item span {
+  margin-top: 1px; /* Subtle adjustment for visual centering */
 }
 
 .user-dropdown-item:hover {

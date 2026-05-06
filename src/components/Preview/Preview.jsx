@@ -1,5 +1,5 @@
 import { useRef, useCallback, useState, useEffect } from 'react';
-import { FiDownload, FiLinkedin, FiGithub, FiTwitter, FiGrid } from 'react-icons/fi';
+import { FiDownload, FiLinkedin, FiGithub, FiTwitter, FiGrid, FiMenu } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { toPng, toJpeg, toSvg } from 'html-to-image';
 import gifshot from 'gifshot';
@@ -16,7 +16,7 @@ const FORMATS = [
   { key: 'gif', label: 'GIF', ext: 'gif' },
 ];
 
-export default function Preview({ state, onSignInClick }) {
+export default function Preview({ state, onSignInClick, onToggleSidebar }) {
   const containerRef = useRef(null);
   const cardRef = useRef(null);
   const [downloading, setDownloading] = useState(false);
@@ -25,9 +25,12 @@ export default function Preview({ state, onSignInClick }) {
   const [autoHeight, setAutoHeight] = useState('auto');
   const [progress, setProgress] = useState('');
 
-  const handleDownload = useCallback(async () => {
+  const [showFormats, setShowFormats] = useState(false);
+
+  const handleDownload = useCallback(async (selectedFormat = format) => {
     if (!cardRef.current) return;
     setDownloading(true);
+    setShowFormats(false);
 
     const options = {
       quality: 1,
@@ -40,13 +43,13 @@ export default function Preview({ state, onSignInClick }) {
     try {
       let dataUrl;
 
-      if (format === 'png') {
+      if (selectedFormat === 'png') {
         dataUrl = await toPng(cardRef.current, options);
-      } else if (format === 'jpg') {
+      } else if (selectedFormat === 'jpg') {
         dataUrl = await toJpeg(cardRef.current, { ...options, backgroundColor: '#ffffff' });
-      } else if (format === 'svg') {
+      } else if (selectedFormat === 'svg') {
         dataUrl = await toSvg(cardRef.current, options);
-      } else if (format === 'webp') {
+      } else if (selectedFormat === 'webp') {
         const canvas = document.createElement('canvas');
         const png = await toPng(cardRef.current, options);
         const img = new Image();
@@ -60,7 +63,7 @@ export default function Preview({ state, onSignInClick }) {
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0);
         dataUrl = canvas.toDataURL('image/webp', 0.95);
-      } else if (format === 'gif') {
+      } else if (selectedFormat === 'gif') {
         const frames = [];
         const numFrames = 15;
         const captureInterval = 120;
@@ -103,7 +106,7 @@ export default function Preview({ state, onSignInClick }) {
       }
 
       const link = document.createElement('a');
-      link.download = `quote-card.${FORMATS.find((f) => f.key === format).ext}`;
+      link.download = `quote-card.${FORMATS.find((f) => f.key === selectedFormat).ext}`;
       link.href = dataUrl;
       link.click();
     } catch (err) {
@@ -112,7 +115,7 @@ export default function Preview({ state, onSignInClick }) {
     }
 
     setDownloading(false);
-  }, [format]);
+  }, [format, state.ratio]);
 
   const [w, h] = RATIO_MAP[state.ratio];
 
@@ -149,49 +152,47 @@ export default function Preview({ state, onSignInClick }) {
 
   return (
     <div className="preview-area">
-      <div className="preview-topbar">
-        <div className="preview-actions">
-          <select
-            className="format-select"
-            value={format}
-            onChange={(e) => setFormat(e.target.value)}
-          >
-            {FORMATS.map((f) => (
-              <option key={f.key} value={f.key}>{f.label}</option>
-            ))}
-          </select>
+      <div className="preview-canvas">
+        <div className="floating-actions">
           <button
-            className="download-btn"
-            onClick={handleDownload}
-            disabled={downloading}
+            className="mobile-sidebar-toggle"
+            onClick={onToggleSidebar}
             type="button"
           >
-            <FiDownload size={14} />
-            <span>{downloading ? (progress || 'Rendering...') : 'Download'}</span>
+            <FiMenu size={16} />
           </button>
-          <a
-            href="https://github.com/AakashAp01/quote-card-studio"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="download-btn github-btn"
-          >
-            <FiGithub size={14} />
-            <span>Star</span>
-          </a>
-        </div>
-        <div className="topbar-right">
-          <Link 
-            to="/showcase" 
-            className="download-btn showcase-link" 
-          >
-            <FiGrid size={14} />
-            <span>Showcase</span>
-          </Link>
-          <UserMenu onSignInClick={onSignInClick} />
-        </div>
-      </div>
+          
+          <div className={`download-dropdown ${showFormats ? 'active' : ''}`}>
+            <button 
+              className="download-btn"
+              onClick={() => setShowFormats(!showFormats)}
+              disabled={downloading}
+            >
+              <FiDownload size={16} />
+              <span>{downloading ? (progress || 'Saving...') : 'Download'}</span>
+            </button>
 
-      <div className="preview-canvas">
+            {showFormats && (
+              <div className="dropdown-menu">
+                <div className="dropdown-header">Select Format</div>
+                {FORMATS.map((f) => (
+                  <button 
+                    key={f.key} 
+                    className={`menu-item ${format === f.key ? 'active' : ''}`}
+                    onClick={() => {
+                      setFormat(f.key);
+                      handleDownload(f.key);
+                    }}
+                  >
+                    <span className="format-label">{f.label}</span>
+                    <span className="format-desc">{f.ext.toUpperCase()} file</span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
         <div 
           className="preview-card-container" 
           ref={containerRef}

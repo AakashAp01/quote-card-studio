@@ -1,11 +1,12 @@
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiArrowLeft, FiLoader, FiEdit2, FiShare2, FiDownload, FiMoreVertical, FiCheck, FiPlay } from 'react-icons/fi';
+import { FiArrowLeft, FiLoader, FiEdit2, FiShare2, FiDownload, FiMoreVertical, FiCheck, FiPlay, FiSearch, FiFilter } from 'react-icons/fi';
 import { toPng } from 'html-to-image';
 import gifshot from 'gifshot';
 import useSavedCards from '../hooks/useSavedCards';
 import CardPreview from '../components/Preview/CardPreview';
 import { RATIO_MAP } from '../constants';
+import { useAuth } from '../context/AuthContext';
 import './Showcase.css';
 
 const ShowcaseCard = ({ card, isFocused, onFocus }) => {
@@ -246,11 +247,14 @@ const ShowcaseCard = ({ card, isFocused, onFocus }) => {
 
 export default function Showcase() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { loadPublicCards, loading } = useSavedCards();
   const [publicCards, setPublicCards] = useState([]);
   const [error, setError] = useState(null);
   const [columnCount, setColumnCount] = useState(4);
   const [focusedCardId, setFocusedCardId] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [userFilter, setUserFilter] = useState('all');
   const gridRef = useRef(null);
 
   useEffect(() => {
@@ -291,7 +295,32 @@ export default function Showcase() {
     return () => window.removeEventListener('resize', updateColumns);
   }, []);
 
-  const visibleCards = publicCards.slice(0, visibleCount);
+  // Filter cards based on search and user selection
+  const filteredCards = publicCards.filter(card => {
+    const matchesSearch = 
+      card.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      card.card_state?.quoteText?.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    const matchesUser = 
+      userFilter === 'all' || 
+      (userFilter === 'self' && card.user_id === user?.id) ||
+      (userFilter === card.user_id);
+
+    return matchesSearch && matchesUser;
+  });
+
+  const visibleCards = filteredCards.slice(0, visibleCount);
+
+  // Extract unique users for the dropdown
+  const uniqueUsers = Array.from(new Set(publicCards.map(c => c.user_id)))
+    .map(id => {
+      const card = publicCards.find(c => c.user_id === id);
+      return {
+        id,
+        name: card.profiles?.username || card.user_email?.split('@')[0] || 'User'
+      };
+    })
+    .filter(u => u.id !== user?.id);
 
   const columns = Array.from({ length: columnCount }, () => []);
   visibleCards.forEach((card, index) => {
@@ -305,7 +334,44 @@ export default function Showcase() {
           <h1>Community <span className="accent">Showcase</span></h1>
           <p>Inspiring designs from our creators</p>
         </div>
-        <div className="header-spacer" style={{ width: 140 }} />
+        
+        <div className="showcase-search-area">
+          <div className="search-container-pill">
+            <div className="filter-group">
+              <FiSearch className="search-pill-icon" size={18} />
+              <select 
+                value={userFilter} 
+                onChange={(e) => setUserFilter(e.target.value)}
+                className="pill-select"
+              >
+                <option value="all">All Creators</option>
+                {user && <option value="self">My Cards</option>}
+                {uniqueUsers.length > 0 && (
+                  <optgroup label="Creators">
+                    {uniqueUsers.map(u => (
+                      <option key={u.id} value={u.id}>{u.name}</option>
+                    ))}
+                  </optgroup>
+                )}
+              </select>
+            </div>
+            
+            <div className="divider-vertical" />
+            
+            <div className="search-group">
+              
+              <input 
+                type="text" 
+                placeholder="Search designs or quotes..." 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pill-input"
+              />
+            </div>
+          </div>
+        </div>
+        
+        <div className="header-spacer" />
       </div>
 
       <div className="showcase-content">

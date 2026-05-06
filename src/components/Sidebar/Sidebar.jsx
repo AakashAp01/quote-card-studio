@@ -24,19 +24,13 @@ export default function Sidebar({
 }) {
   return (
     <aside className="sidebar">
-      <div className="sidebar-header">
-        <div>
-          <div className="sidebar-title">
-            Quote <span className="accent">Studio</span>
-          </div>
-          <div className="sidebar-subtitle">Design beautiful quote cards</div>
-        </div>
-        {onClose && (
+      {onClose && (
+        <div className="sidebar-header">
           <button className="sidebar-close-btn" onClick={onClose} type="button">
             <FiX size={18} />
           </button>
-        )}
-      </div>
+        </div>
+      )}
 
       <div className="sidebar-content">
         <SavedCardsPanel state={state} onLoadCard={loadCardState} />

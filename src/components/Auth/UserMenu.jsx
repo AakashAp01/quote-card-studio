@@ -23,7 +23,7 @@ export default function UserMenu({ onSignInClick }) {
     return (
       <button className="sign-in-btn" onClick={onSignInClick} type="button">
         <FiUser size={16} />
-        {/* <span>Sign In</span> */}
+        <span>Sign In</span>
       </button>
     );
   }
@@ -58,7 +58,7 @@ export default function UserMenu({ onSignInClick }) {
           <div className="user-dropdown-divider" />
           <button className="user-dropdown-item" onClick={handleSignOut} type="button">
             <FiLogOut size={14} />
-            <span>Sign Out</span>
+            <span>Logout</span>
           </button>
         </div>
       )}
