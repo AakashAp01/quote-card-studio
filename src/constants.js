@@ -10,6 +10,16 @@ export const FONTS = [
   { name: 'Outfit', style: 'sans' },
   { name: 'Inter', style: 'sans' },
   { name: 'Poppins', style: 'sans' },
+  { name: 'Pacifico', style: 'fancy' },
+  { name: 'Dancing Script', style: 'fancy' },
+  { name: 'Satisfy', style: 'fancy' },
+  { name: 'Kaushan Script', style: 'fancy' },
+  { name: 'Cinzel', style: 'fancy' },
+  { name: 'Abril Fatface', style: 'fancy' },
+  { name: 'Monoton', style: 'fancy' },
+  { name: 'Lobster', style: 'fancy' },
+  { name: 'Righteous', style: 'fancy' },
+  { name: 'Caveat', style: 'fancy' },
 ];
 
 export const GRADIENTS = [

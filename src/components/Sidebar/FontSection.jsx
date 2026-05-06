@@ -2,7 +2,6 @@ import { useState, useCallback, useEffect, useRef } from 'react';
 import { FiType } from 'react-icons/fi';
 import CollapsiblePanel from '../ui/CollapsiblePanel';
 import ControlRow from '../ui/ControlRow';
-import FontChip from '../ui/FontChip';
 import { FONTS } from '../../constants';
 
 export default function FontSection({
@@ -114,17 +113,20 @@ export default function FontSection({
         )}
       </div>
 
-      <div className="hint-text">Built-in Fonts</div>
-      <div className="font-chips-container">
-        {FONTS.map((f) => (
-          <FontChip
-            key={f.name}
-            name={f.name}
-            isActive={font === f.name && !customFontName}
-            onClick={() => handleFontSelect(f.name)}
-          />
-        ))}
-      </div>
+      <ControlRow label="Selection">
+        <select 
+          value={!customFontName ? font : ''} 
+          onChange={(e) => handleFontSelect(e.target.value)}
+          style={{ flex: 2, fontSize: 12 }}
+        >
+          <option value="" disabled>{customFontName ? 'Custom Font Active' : 'Select a font'}</option>
+          {FONTS.map((f) => (
+            <option key={f.name} value={f.name}>
+              {f.name}
+            </option>
+          ))}
+        </select>
+      </ControlRow>
 
       <div className="divider" />
 
