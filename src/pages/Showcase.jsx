@@ -352,11 +352,11 @@ export default function Showcase() {
         
         <div className="showcase-search-area">
           <button 
-            className="btn btn-ghost showcase-back-btn header-back-btn"
+            className="btn showcase-back-btn header-back-btn"
             onClick={() => navigate('/')}
           >
             <FiArrowLeft size={16} />
-            <span>Editor</span>
+            <span>Back to Editor</span>
           </button>
           <div className="search-container-pill">
             <div className="filter-group">

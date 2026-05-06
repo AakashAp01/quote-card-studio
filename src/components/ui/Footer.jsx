@@ -1,9 +1,9 @@
 import { FiLinkedin, FiGithub, FiTwitter } from 'react-icons/fi';
 import './Footer.css';
 
-export default function Footer({ children }) {
+export default function Footer({ children, className = "" }) {
   return (
-    <div className="app-footer">
+    <div className={`app-footer ${className}`}>
       <div className="footer-content">
         {children && <div className="footer-extra">{children}</div>}
         <div className="footer-credit">

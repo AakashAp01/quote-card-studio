@@ -129,6 +129,24 @@
   gap: 12px;
 }
 
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-info {
+  font-size: 11px;
+  font-weight: 600;
+  color: #888;
+  letter-spacing: 0.02em;
+}
+
+.footer-sep {
+  color: #333;
+  font-size: 10px;
+}
+
 @media (max-width: 900px) {
   .preview-area {
     min-height: 500px;

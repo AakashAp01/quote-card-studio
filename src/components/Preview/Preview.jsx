@@ -214,7 +214,7 @@ export default function Preview({ state, onSignInClick, onToggleSidebar }) {
         </div>
       </div>
 
-      <Footer>
+      <Footer className="preview-footer">
         <div className="footer-left">
           <span className="footer-info">{w} × {h || 'auto'}</span>
           <span className="footer-sep">|</span>

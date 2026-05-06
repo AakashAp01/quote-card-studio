@@ -21,23 +21,26 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 16px !important;
-  background: #1e1e24 !important;
-  color: #aaa !important;
-  box-shadow: inset 0 0 0 1px #2e2e38;
+  padding: 8px 20px !important;
+  background: linear-gradient(135deg, #5a5aff 0%, #4a4aff 100%) !important;
+  color: #fff !important;
   border: none !important;
-  border-radius: 8px !important;
+  border-radius: 10px !important;
   font-size: 13px !important;
-  font-weight: 600 !important;
-  transition: all 0.2s !important;
-  height: 38px;
+  font-weight: 700 !important;
+  transition: all 0.3s cubic-bezier(0.2, 1, 0.3, 1) !important;
+  height: 40px;
+  box-shadow: 0 4px 15px rgba(90, 90, 255, 0.25);
 }
 
 .showcase-back-btn:hover {
-  background: #2a2a32 !important;
-  box-shadow: inset 0 0 0 1px #5a5aff;
-  color: #fff !important;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(90, 90, 255, 0.4);
+  filter: brightness(1.1);
+}
+
+.showcase-back-btn:active {
+  transform: translateY(0);
 }
 
 .showcase-title-area {
@@ -60,11 +63,11 @@
 .showcase-search-area {
   margin: 50px auto 10px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  gap: 15px;
+  gap: 20px;
+  max-width: 1400px;
   width: 100%;
-  padding: 0 20px;
 }
 
 .header-back-btn {
@@ -78,11 +81,11 @@
   background: rgba(18, 18, 22, 0.7);
   backdrop-filter: blur(24px);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 15px;
-  height: 56px;
+  border-radius: 12px;
+  height: 45px;
   width: 100%;
   max-width: 720px;
-  padding: 0 8px;
+  padding: 0 5px;
   transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
   position: relative;
 }
@@ -120,7 +123,7 @@
   cursor: pointer;
   outline: none;
   min-width: 120px;
-  padding-right: 24px;
+  padding-right: 20px;
   font-family: inherit;
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'%3E%3C/path%3E%3C/svg%3E");
@@ -156,7 +159,6 @@
   flex: 1;
   display: flex;
   align-items: center;
-  padding-right: 12px;
 }
 
 .search-pill-icon {
@@ -191,15 +193,41 @@
 }
 
 @media (max-width: 600px) {
+  .showcase-search-area {
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 30px;
+  }
+
+  .showcase-back-btn {
+    width: 100%;
+    justify-content: center;
+    background: linear-gradient(135deg, #5a5aff 0%, #4a4aff 100%) !important;
+    color: #fff !important;
+    height: 44px !important; /* GitHub/Showcase standard size */
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    box-shadow: 0 4px 15px rgba(90, 90, 255, 0.2) !important;
+    border-radius: 10px !important;
+    order: -1;
+    margin-bottom: 6px;
+  }
+
+  .showcase-back-btn:active {
+    transform: scale(0.98);
+  }
+
   .search-container-pill {
     height: auto;
     flex-direction: column;
     border-radius: 15px;
     padding: 12px 8px;
+    width: 100%;
+    max-width: 100%;
   }
   
   .divider-vertical {
-    width: 80%;
+    width: 100%;
     height: 1px;
     margin: 8px 0;
   }
@@ -216,7 +244,6 @@
   
   .search-group {
     width: 100%;
-    padding-left: 12px;
   }
 }
 
