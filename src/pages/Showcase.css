@@ -61,8 +61,15 @@
   margin: 50px auto 10px;
   display: flex;
   justify-content: center;
+  align-items: center;
+  gap: 15px;
   width: 100%;
   padding: 0 20px;
+}
+
+.header-back-btn {
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .search-container-pill {
@@ -570,16 +577,7 @@
   }
 }
 
-.showcase-footer {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-  margin-top: 60px;
-  padding-top: 40px;
-  border-top: 1px solid #1e1e26;
-}
+
 
 @media (max-width: 600px) {
   .joint-search-bar {

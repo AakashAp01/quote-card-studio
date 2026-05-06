@@ -53,100 +53,64 @@ export const RATIO_MAP = {
 };
 
 export const PRESETS = {
-  minimal: {
-    bgTab: 'solid', bgColor: '#ffffff',
-    textColor: '#1a1a1a', font: 'Montserrat', fontWeight: '400', italic: false,
-    gfontUrl: 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap',
-    hlColor: '#d4f0b0', padding: 48, radius: 12, shadow: 'md', showBorder: false,
+  cyberpunk: {
+    bgTab: 'gradient', gradC1: '#ff00ff', gradC2: '#00ffff', gradAngle: 135,
+    textColor: '#ffffff', font: 'Monoton', fontWeight: '400', italic: false,
+    hlColor: '#ffff00', padding: 44, radius: 0, shadow: 'xl', showBorder: true, borderColor: '#ffffff',
+    glassMode: true, glassOpacity: 30, glassBlur: 10, noiseOpacity: 25,
   },
-  dark: {
-    bgTab: 'solid', bgColor: '#0d0d0d',
-    textColor: '#f5f5f0', font: 'Playfair Display', fontWeight: '400', italic: true,
-    gfontUrl: 'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap',
-    hlColor: '#2a4a2a', padding: 48, radius: 8, shadow: 'lg', showBorder: false,
+  editorial: {
+    bgTab: 'solid', bgColor: '#1a1a1a',
+    textColor: '#ffffff', font: 'Abril Fatface', fontWeight: '400', italic: false,
+    hlColor: '#ff3e3e', padding: 60, radius: 4, shadow: 'lg', showBorder: false,
+    noiseOpacity: 5, align: 'center',
   },
-  sunset: {
-    bgTab: 'gradient', gradC1: '#ff6b6b', gradC2: '#ffa500', gradAngle: 135,
-    textColor: '#ffffff', font: 'Inter', fontWeight: '700', italic: false,
-    gfontUrl: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap',
-    hlColor: '#ffffff', padding: 44, radius: 20, shadow: 'xl', showBorder: false,
-  },
-  forest: {
-    bgTab: 'gradient', gradC1: '#1a472a', gradC2: '#2d5a27', gradAngle: 120,
-    textColor: '#d8f3dc', font: 'Lora', fontWeight: '400', italic: true,
-    gfontUrl: 'https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&display=swap',
-    hlColor: '#40916c', padding: 44, radius: 16, shadow: 'lg', showBorder: false,
-  },
-  aurora: {
-    bgTab: 'gradient', gradC1: '#1a1a2e', gradC2: '#16213e', gradAngle: 135,
-    textColor: '#e8e8ff', font: 'Outfit', fontWeight: '400', italic: false,
-    gfontUrl: 'https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap',
-    hlColor: '#a855f7', padding: 44, radius: 20, shadow: 'xl', showBorder: true, borderColor: '#3a3a6a',
-  },
-  paper: {
-    bgTab: 'solid', bgColor: '#f5f0e8',
-    textColor: '#2c2416', font: 'Lora', fontWeight: '400', italic: false,
-    gfontUrl: 'https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&display=swap',
-    hlColor: '#d4a574', padding: 48, radius: 4, shadow: 'sm', showBorder: true, borderColor: '#d4c4a0',
+  zen: {
+    bgTab: 'gradient', gradC1: '#a8edea', gradC2: '#fed6e3', gradAngle: 135,
+    textColor: '#2c3e50', font: 'Pacifico', fontWeight: '400', italic: false,
+    hlColor: '#ffffff', padding: 48, radius: 24, shadow: 'md', showBorder: false,
+    glassMode: true, glassOpacity: 20, glassBlur: 15,
   },
   midnight: {
-    bgTab: 'gradient', gradC1: '#0a0a1a', gradC2: '#0d2137', gradAngle: 135,
-    textColor: '#a8d8ea', font: 'Space Grotesk', fontWeight: '400', italic: false,
-    gfontUrl: 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap',
-    hlColor: '#1a4a6a', padding: 48, radius: 16, shadow: 'xl', showBorder: false,
-  },
-  rose: {
-    bgTab: 'gradient', gradC1: '#f9e4e4', gradC2: '#f5d0c5', gradAngle: 135,
-    textColor: '#5c2a2a', font: 'Caveat', fontWeight: '700', italic: false,
-    gfontUrl: 'https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap',
-    hlColor: '#e8a0a0', padding: 44, radius: 20, shadow: 'md', showBorder: false,
-  },
-  neon: {
     bgTab: 'solid', bgColor: '#0a0a0a',
-    textColor: '#39ff14', font: 'Bebas Neue', fontWeight: '400', italic: false,
-    gfontUrl: 'https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap',
-    hlColor: '#39ff14', padding: 44, radius: 16, shadow: 'xl', showBorder: true, borderColor: '#39ff14',
+    textColor: '#d4af37', font: 'Cinzel', fontWeight: '700', italic: false,
+    hlColor: '#d4af37', padding: 50, radius: 8, shadow: 'xl', showBorder: true, borderColor: '#d4af37',
+    noiseOpacity: 10,
   },
-  pastel: {
-    bgTab: 'gradient', gradC1: '#ffd1dc', gradC2: '#c3b1e1', gradAngle: 135,
-    textColor: '#4a3060', font: 'Montserrat', fontWeight: '400', italic: false,
-    gfontUrl: 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap',
-    hlColor: '#e8b4f8', padding: 48, radius: 24, shadow: 'md', showBorder: false,
+  handwritten: {
+    bgTab: 'solid', bgColor: '#fdf6e3',
+    textColor: '#268bd2', font: 'Caveat', fontWeight: '700', italic: false,
+    hlColor: '#eee8d5', padding: 44, radius: 12, shadow: 'sm', showBorder: false,
+    noiseOpacity: 15,
+  },
+  retrowave: {
+    bgTab: 'gradient', gradC1: '#2b0044', gradC2: '#ff0080', gradAngle: 180,
+    textColor: '#ffffff', font: 'Righteous', fontWeight: '400', italic: false,
+    hlColor: '#00ffff', padding: 40, radius: 20, shadow: 'xl', showBorder: false,
+    patternEmoji: '✨', patternSize: 20, patternSpacing: 60, patternOpacity: 30,
+  },
+  minimal: {
+    bgTab: 'solid', bgColor: '#ffffff',
+    textColor: '#1a1a1a', font: 'Outfit', fontWeight: '600', italic: false,
+    hlColor: '#5a5aff', padding: 56, radius: 16, shadow: 'xl', showBorder: false,
+    align: 'left',
   },
   ocean: {
     bgTab: 'gradient', gradC1: '#0077b6', gradC2: '#00b4d8', gradAngle: 160,
-    textColor: '#caf0f8', font: 'Outfit', fontWeight: '400', italic: false,
-    gfontUrl: 'https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap',
-    hlColor: '#90e0ef', padding: 44, radius: 16, shadow: 'lg', showBorder: false,
+    textColor: '#ffffff', font: 'Satisfy', fontWeight: '400', italic: false,
+    hlColor: '#90e0ef', padding: 44, radius: 20, shadow: 'lg', showBorder: false,
+    glassMode: true, glassOpacity: 25, glassBlur: 10,
   },
-  retro: {
-    bgTab: 'solid', bgColor: '#fdf6e3',
-    textColor: '#b58900', font: 'Bebas Neue', fontWeight: '400', italic: false,
-    gfontUrl: 'https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap',
-    hlColor: '#cb4b16', padding: 48, radius: 0, shadow: 'none', showBorder: true, borderColor: '#b58900',
+  vintage: {
+    bgTab: 'solid', bgColor: '#f5f0e8',
+    textColor: '#2c2416', font: 'Lora', fontWeight: '400', italic: true,
+    hlColor: '#d4a574', padding: 48, radius: 0, shadow: 'sm', showBorder: true, borderColor: '#d4c4a0',
+    noiseOpacity: 20,
   },
-  luxury: {
-    bgTab: 'solid', bgColor: '#1a1a1a',
-    textColor: '#d4af37', font: 'Playfair Display', fontWeight: '700', italic: false,
-    gfontUrl: 'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap',
-    hlColor: '#d4af37', padding: 48, radius: 4, shadow: 'xl', showBorder: true, borderColor: '#d4af37',
-  },
-  loveEmoji: {
-    bgTab: 'pattern', patternEmoji: '💗', patternBgColor: '#fff0f5', patternSize: 22, patternSpacing: 70, patternOpacity: 25, patternRotation: -15,
-    textColor: '#8b2252', font: 'Caveat', fontWeight: '700', italic: false,
-    gfontUrl: 'https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap',
-    hlColor: '#ff69b4', padding: 44, radius: 20, shadow: 'md', showBorder: false,
-  },
-  cosmicEmoji: {
-    bgTab: 'pattern', patternEmoji: '✨', patternBgColor: '#0d0d2b', patternSize: 20, patternSpacing: 90, patternOpacity: 20, patternRotation: -10,
+  cosmic: {
+    bgTab: 'gradient', gradC1: '#0f0c29', gradC2: '#302b63', gradAngle: 135,
     textColor: '#e8e8ff', font: 'Space Grotesk', fontWeight: '400', italic: false,
-    gfontUrl: 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap',
-    hlColor: '#a855f7', padding: 44, radius: 16, shadow: 'xl', showBorder: false,
-  },
-  floralEmoji: {
-    bgTab: 'pattern', patternEmoji: '🌸', patternBgColor: '#fef9f0', patternSize: 24, patternSpacing: 80, patternOpacity: 20, patternRotation: 0,
-    textColor: '#5c3d2e', font: 'Lora', fontWeight: '400', italic: true,
-    gfontUrl: 'https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&display=swap',
-    hlColor: '#e8a0a0', padding: 48, radius: 16, shadow: 'sm', showBorder: false,
+    hlColor: '#a855f7', padding: 44, radius: 20, shadow: 'xl', showBorder: false,
+    patternEmoji: '⭐', patternSize: 18, patternSpacing: 80, patternOpacity: 20,
   },
 };

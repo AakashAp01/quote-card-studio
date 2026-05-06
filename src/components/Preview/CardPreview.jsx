@@ -18,10 +18,8 @@ const CardPreview = memo(function CardPreview({ state, cardRef, isThumbnail = fa
   const [w, h] = RATIO_MAP[state.ratio];
   const lastLoadedUrl = useRef(null);
 
-  // Auto-load custom Google Font if provided in state
   useEffect(() => {
     if (state.gfontUrl && state.gfontUrl !== lastLoadedUrl.current) {
-      // Use a unique ID for each font URL to avoid conflicts in a grid
       const linkId = `gfont-${state.gfontUrl.replace(/[^a-z0-9]/gi, '')}`;
       if (!document.getElementById(linkId)) {
         const link = document.createElement('link');

@@ -23,7 +23,6 @@ export function AuthProvider({ children }) {
         .single();
       
       if (error || !data) {
-        // If profile missing but user exists, try to auto-create it (self-healing)
         const { data: { user } } = await supabase.auth.getUser();
         if (user && user.id === userId) {
           const username = user.user_metadata?.username || user.email?.split('@')[0] || 'User';
@@ -70,7 +69,6 @@ export function AuthProvider({ children }) {
   }, [fetchProfile]);
 
   const signUp = useCallback(async (email, password, username) => {
-    // 1. Check if username exists in profiles first to give immediate error
     const { data: existing } = await supabase
       .from('profiles')
       .select('username')
@@ -89,7 +87,6 @@ export function AuthProvider({ children }) {
 
     if (error) throw error;
 
-    // 2. Manually create profile record if user is created (and possibly auto-logged in)
     if (data?.user) {
       try {
         await supabase
@@ -102,7 +99,6 @@ export function AuthProvider({ children }) {
           });
       } catch (profileErr) {
         console.warn('Profile record creation delayed or failed:', profileErr.message);
-        // We don't throw here to avoid blocking the signup flow if RLS is strict
       }
     }
 
@@ -112,9 +108,7 @@ export function AuthProvider({ children }) {
   const signIn = useCallback(async (identifier, password) => {
     let email = identifier;
 
-    // Check if identifier is an email (contains @)
     if (!identifier.includes('@')) {
-      // It's a username, look up the email
       const { data: profile, error: profileError } = await supabase
         .from('profiles')
         .select('email')

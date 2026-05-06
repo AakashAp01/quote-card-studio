@@ -1,10 +1,9 @@
 import { useRef, useCallback, useState, useEffect } from 'react';
 import { FiDownload, FiLinkedin, FiGithub, FiTwitter, FiGrid, FiMenu } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
 import { toPng, toJpeg, toSvg } from 'html-to-image';
 import gifshot from 'gifshot';
 import CardPreview from './CardPreview';
-import UserMenu from '../Auth/UserMenu';
+import Footer from '../ui/Footer';
 import { RATIO_MAP } from '../../constants';
 import './Preview.css';
 
@@ -152,47 +151,47 @@ export default function Preview({ state, onSignInClick, onToggleSidebar }) {
 
   return (
     <div className="preview-area">
-      <div className="preview-canvas">
-        <div className="floating-actions">
-          <button
-            className="mobile-sidebar-toggle"
-            onClick={onToggleSidebar}
-            type="button"
+      <div className="floating-actions">
+        <button
+          className="mobile-sidebar-toggle"
+          onClick={onToggleSidebar}
+          type="button"
+        >
+          <FiMenu size={16} />
+        </button>
+        
+        <div className={`download-dropdown ${showFormats ? 'active' : ''}`}>
+          <button 
+            className="download-btn"
+            onClick={() => setShowFormats(!showFormats)}
+            disabled={downloading}
           >
-            <FiMenu size={16} />
+            <FiDownload size={16} />
+            <span>{downloading ? (progress || 'Saving...') : 'Download'}</span>
           </button>
-          
-          <div className={`download-dropdown ${showFormats ? 'active' : ''}`}>
-            <button 
-              className="download-btn"
-              onClick={() => setShowFormats(!showFormats)}
-              disabled={downloading}
-            >
-              <FiDownload size={16} />
-              <span>{downloading ? (progress || 'Saving...') : 'Download'}</span>
-            </button>
 
-            {showFormats && (
-              <div className="dropdown-menu">
-                <div className="dropdown-header">Select Format</div>
-                {FORMATS.map((f) => (
-                  <button 
-                    key={f.key} 
-                    className={`menu-item ${format === f.key ? 'active' : ''}`}
-                    onClick={() => {
-                      setFormat(f.key);
-                      handleDownload(f.key);
-                    }}
-                  >
-                    <span className="format-label">{f.label}</span>
-                    <span className="format-desc">{f.ext.toUpperCase()} file</span>
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
+          {showFormats && (
+            <div className="dropdown-menu">
+              <div className="dropdown-header">Select Format</div>
+              {FORMATS.map((f) => (
+                <button 
+                  key={f.key} 
+                  className={`menu-item ${format === f.key ? 'active' : ''}`}
+                  onClick={() => {
+                    setFormat(f.key);
+                    handleDownload(f.key);
+                  }}
+                >
+                  <span className="format-label">{f.label}</span>
+                  <span className="format-desc">{f.ext.toUpperCase()} file</span>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
+      </div>
 
+      <div className="preview-canvas">
         <div 
           className="preview-card-container" 
           ref={containerRef}
@@ -215,21 +214,13 @@ export default function Preview({ state, onSignInClick, onToggleSidebar }) {
         </div>
       </div>
 
-      <div className="preview-footer">
+      <Footer>
         <div className="footer-left">
           <span className="footer-info">{w} × {h || 'auto'}</span>
           <span className="footer-sep">|</span>
           <span className="footer-info">Font: {state.font}</span>
         </div>
-        <div className="footer-credit">
-          <span>Made with <span className="heart-emoji">❤️</span> by <strong>AkashAp</strong></span>
-          <div className="footer-socials">
-            <a href="https://www.linkedin.com/in/aakashap/" target="_blank" rel="noopener noreferrer" title="LinkedIn"><FiLinkedin size={14} /></a>
-            <a href="https://github.com/AakashAp01" target="_blank" rel="noopener noreferrer" title="GitHub"><FiGithub size={14} /></a>
-            <a href="https://x.com/_akash_ap_" target="_blank" rel="noopener noreferrer" title="X"><FiTwitter size={14} /></a>
-          </div>
-        </div>
-      </div>
+      </Footer>
     </div>
   );
 }

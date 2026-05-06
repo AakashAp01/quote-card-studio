@@ -7,6 +7,7 @@ import useSavedCards from '../hooks/useSavedCards';
 import CardPreview from '../components/Preview/CardPreview';
 import { RATIO_MAP } from '../constants';
 import { useAuth } from '../context/AuthContext';
+import Footer from '../components/ui/Footer';
 import './Showcase.css';
 
 const ShowcaseCard = ({ card, isFocused, onFocus }) => {
@@ -281,20 +282,6 @@ export default function Showcase() {
     fetchCards();
   }, [loadPublicCards]);
 
-  useEffect(() => {
-    const updateColumns = () => {
-      const width = window.innerWidth;
-      if (width < 380) setColumnCount(1);
-      else if (width < 800) setColumnCount(2);
-      else if (width < 1200) setColumnCount(3);
-      else setColumnCount(4);
-    };
-
-    window.addEventListener('resize', updateColumns);
-    updateColumns();
-    return () => window.removeEventListener('resize', updateColumns);
-  }, []);
-
   // Filter cards based on search and user selection
   const filteredCards = publicCards.filter(card => {
     const matchesSearch = 
@@ -309,8 +296,6 @@ export default function Showcase() {
     return matchesSearch && matchesUser;
   });
 
-  const visibleCards = filteredCards.slice(0, visibleCount);
-
   // Extract unique users for the dropdown
   const uniqueUsers = Array.from(new Set(publicCards.map(c => c.user_id)))
     .map(id => {
@@ -321,6 +306,36 @@ export default function Showcase() {
       };
     })
     .filter(u => u.id !== user?.id);
+
+  // Infinite scroll logic
+  useEffect(() => {
+    const handleScroll = () => {
+      // Load more when 500px from bottom
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
+        if (visibleCount < filteredCards.length) {
+          setVisibleCount(prev => prev + 10);
+        }
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [visibleCount, filteredCards.length]);
+
+  useEffect(() => {
+    const updateColumns = () => {
+      const width = window.innerWidth;
+      if (width < 380) setColumnCount(1);
+      else if (width < 800) setColumnCount(2);
+      else if (width < 1200) setColumnCount(3);
+      else setColumnCount(4);
+    };
+
+    window.addEventListener('resize', updateColumns);
+    updateColumns();
+    return () => window.removeEventListener('resize', updateColumns);
+  }, []);
+
+  const visibleCards = filteredCards.slice(0, visibleCount);
 
   const columns = Array.from({ length: columnCount }, () => []);
   visibleCards.forEach((card, index) => {
@@ -336,6 +351,13 @@ export default function Showcase() {
         </div>
         
         <div className="showcase-search-area">
+          <button 
+            className="btn btn-ghost showcase-back-btn header-back-btn"
+            onClick={() => navigate('/')}
+          >
+            <FiArrowLeft size={16} />
+            <span>Editor</span>
+          </button>
           <div className="search-container-pill">
             <div className="filter-group">
               <FiSearch className="search-pill-icon" size={18} />
@@ -405,29 +427,10 @@ export default function Showcase() {
                 </div>
               ))}
             </div>
-
-            <div className="showcase-footer">
-              <button 
-                className="btn btn-ghost showcase-back-btn"
-                onClick={() => navigate('/')}
-              >
-                <FiArrowLeft size={16} />
-                <span> Back</span>
-              </button>
-              {visibleCount < publicCards.length && (
-                <button 
-                  className="btn btn-primary load-more-btn showcase-back-btn"
-                  onClick={() => setVisibleCount(prev => prev + 10)}
-                >
-                  <FiLoader size={16} style={{ marginRight: 5 }} />
-                  <span>Load More</span>
-                </button>
-              )}
-              
-            </div>
           </>
         )}
       </div>
+      <Footer />
     </div>
   );
 }
